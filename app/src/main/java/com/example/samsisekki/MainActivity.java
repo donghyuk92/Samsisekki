@@ -1,10 +1,15 @@
 package com.example.samsisekki;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +20,11 @@ import android.widget.ListView;
 import com.example.samsisekki.Alarm.AlarmFragment;
 import com.example.user.menu4u.R;
 
+import java.util.UUID;
+
 public class MainActivity extends AppCompatActivity {
+    protected static final String PREFS_FILE = "device_id.xml";
+    protected static final String PREFS_DEVICE_ID = "device_id";
     private CharSequence mTitle;
     DrawerLayout dlDrawer;
     ActionBarDrawerToggle dtToggle;
@@ -33,6 +42,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Device ID 생성, sharedpreferences 에 있으면
+        SharedPreferences pref = getSharedPreferences(PREFS_FILE, MODE_PRIVATE);
+        String deviceID = pref.getString(PREFS_DEVICE_ID,"NULL");
+
+            if(deviceID=="NULL") {
+               new DeviceUuidFactory(this);
+            }
 
         // Fragments
         fragGrid = ImageGridFragment.newInstance();

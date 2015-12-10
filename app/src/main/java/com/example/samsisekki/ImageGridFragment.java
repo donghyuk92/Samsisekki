@@ -221,12 +221,14 @@ public class ImageGridFragment extends Fragment implements AdapterView.OnItemCli
             mImageViewLayoutParams = new GridView.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             // Calculate ActionBar height
+            /**
             TypedValue tv = new TypedValue();
             if (context.getTheme().resolveAttribute(
                     android.R.attr.actionBarSize, tv, true)) {
                 mActionBarHeight = TypedValue.complexToDimensionPixelSize(
                         tv.data, context.getResources().getDisplayMetrics());
             }
+            **/
         }
 
         @Override
@@ -276,8 +278,8 @@ public class ImageGridFragment extends Fragment implements AdapterView.OnItemCli
                     convertView = new View(mContext);
                 }
                 // Set empty view with height of ActionBar
-                convertView.setLayoutParams(new AbsListView.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT, mActionBarHeight));
+                //convertView.setLayoutParams(new AbsListView.LayoutParams(
+                //        ViewGroup.LayoutParams.MATCH_PARENT, mActionBarHeight));
                 return convertView;
             }
 

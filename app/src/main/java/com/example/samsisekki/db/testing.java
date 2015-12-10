@@ -8,7 +8,6 @@ import java.util.ArrayList;
 public class testing {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		float[] asd= new float[5];
         asd[0] = (float) 2.9;
         asd[1] = (float) 15.3;
