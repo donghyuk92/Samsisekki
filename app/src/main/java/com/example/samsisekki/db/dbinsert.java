@@ -1,16 +1,9 @@
 package com.example.samsisekki.db;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.util.Log;
 import android.widget.Toast;
-
-import com.example.user.menu4u.R;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -19,42 +12,16 @@ import java.net.URL;
  * Created by User on 2015-11-16.
  */
 public class dbinsert extends Activity {
-
     private static final String IP = "117.17.188.146";
-    TextView txtView;
-    phpInsert task_insert;
-    EditText messageInput;
+    phpInsert task_insert = new phpInsert();
 
-    Button sendID_btn ;
-    String id ;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.db);
-        txtView = (TextView)findViewById(R.id.txt);
-
-        // 서버 : 전송할 메시지 입력 박스
-        messageInput = (EditText) findViewById(R.id.messageInput);
-
-        sendID_btn = (Button) findViewById(R.id.send);
-        id = messageInput.getText().toString();
-
-    }
-
-    public void onClick2(View v)
-    {
-        task_insert = new phpInsert();
-        id = messageInput.getText().toString();
-        String query = "http://"+IP+"/donghyuk/insert.php?menu="+this.id+"&rating="+this.id+"&etc="+this.id;
+    public void insert(String deviceID, String clas, String menu, Float rating) {
+        String query = "http://"+IP+"/donghyuk/insert.php?deviceID="+deviceID+"&class="+clas+"&menu="+menu+"&rating="+rating;
         task_insert.execute(query);
 
-        Intent intent = new Intent(this, dbtext.class);
-        startActivity(intent);
     }
 
-    private class phpInsert extends AsyncTask<String, Integer,String> {
-
+    private class phpInsert extends AsyncTask<String,Integer,String> {
         @Override
         protected String doInBackground(String... string) {
             try{
@@ -77,16 +44,14 @@ public class dbinsert extends Activity {
             return "1";
 
         }
-
+        /**
         protected void onPostExecute(String str){
             if(str.equals("1")){
-                Toast.makeText(getApplicationContext(), "DB Insert Complete.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getCurrentFocus().getContext(), "평가가 반영됬습니다!", Toast.LENGTH_LONG).show();
             }else{
-                Toast.makeText(getApplicationContext(),"DB Insert Failed.",Toast.LENGTH_LONG).show();
+                Toast.makeText(getCurrentFocus().getContext(),"평가가 반영되지 않았습니다. 인터넷 연결 상태를 확인해주세요!",Toast.LENGTH_LONG).show();
             }
-
         }
-
+         **/
     }
-
 }

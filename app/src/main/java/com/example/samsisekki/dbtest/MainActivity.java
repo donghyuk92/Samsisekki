@@ -60,7 +60,7 @@ public class MainActivity extends ActionBarActivity {
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		// Alarm Manager Object
 		AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-		// Alarm Manager calls BroadCast for every Ten seconds (10 * 1000), BroadCase further calls service to check if new records are inserted in 
+		// Alarm Manager calls BroadCast for every Ten seconds (10 * 1000), BroadCase further calls service to check if new records are inserted in
 		// Remote MySQL DB
 		alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + 5000, 10 * 1000, pendingIntent);
 	}
@@ -96,7 +96,7 @@ public class MainActivity extends ActionBarActivity {
 		// Show ProgressBar
 		prgDialog.show();
 		// Make Http call to getusers.php
-		client.post("http://117.17.188.146/donghyuk/sync/script/getusers.php", params, new AsyncHttpResponseHandler() {
+		client.post("http://http://117.17.188.146/donghyuk/sync/script/getusers.php", params, new AsyncHttpResponseHandler() {
 				@Override
 				public void onSuccess(String response) {
 					// Hide ProgressBar
@@ -169,7 +169,7 @@ public class MainActivity extends ActionBarActivity {
 		RequestParams params = new RequestParams();
 		params.put("syncsts", json);
 		// Make Http call to updatesyncsts.php with JSON parameter which has Sync statuses of Users
-		client.post("http://117.17.188.146/donghyuk/sync/script/updatesyncsts.php", params, new AsyncHttpResponseHandler() {
+		client.post("http://192.168.2.4:9000/mysqlsqlitesync/updatesyncsts.php", params, new AsyncHttpResponseHandler() {
 			@Override
 			public void onSuccess(String response) {
 				Toast.makeText(getApplicationContext(),	"MySQL DB has been informed about Sync activity", Toast.LENGTH_LONG).show();

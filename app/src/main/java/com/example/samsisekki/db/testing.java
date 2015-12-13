@@ -62,9 +62,6 @@ public class testing {
         int index = VectorUtil.getMenuIndex(likeme, tmp1);
         // Extract recommended menu index using differlist
         System.out.println("index = " + index);
-        
-
-        
 	}
 	
 //        Random randomizer = new Random();

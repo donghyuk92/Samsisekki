@@ -1,8 +1,6 @@
 package com.example.samsisekki;
 
 import android.app.Activity;
-import android.app.ListActivity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,25 +17,24 @@ import android.widget.Toast;
 import com.example.samsisekki.parsing.parsing;
 import com.example.user.menu4u.R;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import com.example.samsisekki.db.dbinsert;
 
 /**
  * Created by slave on 2015-11-17.
  */
 public class FoodList extends AppCompatActivity {
 
-    TextView tv01;
     ListView foodlist;
     String[] values = new String[] { "후라이드치킨", "양념치킨", "간장치킨", "퓨전치킨", "마늘치킨" };
-    RatingBar rating;
+    DeviceUuidFactory dev;
+    String deviceID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.foodlist);
-
+        dev = new DeviceUuidFactory(this);
+        deviceID = dev.getDeviceID();
         CustomList adapter = new CustomList(this);
         foodlist = (ListView) findViewById(R.id.foodlist);
         foodlist.setAdapter(adapter);
@@ -49,19 +46,8 @@ public class FoodList extends AppCompatActivity {
         });
     }
         /**
-        tv01 = (TextView) findViewById(R.id.text1);
-        rating = (RatingBar) findViewById(R.id.ratingBar1);
-        rating.setStepSize((float) 0.5);        //별 색깔이 1칸씩줄어들고 늘어남 0.5로하면 반칸씩 들어감
         rating.setRating((float) 2.5);      // 처음보여줄때(색깔이 한개도없음) default 값이 0  이다
         rating.setIsIndicator(false);           //true - 별점만 표시 사용자가 변경 불가 , false - 사용자가 변경가능
-        rating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating,
-                                        boolean fromUser) {
-                tv01.setText("평점 : " + rating);
-            }
-        });
-    }
 **/
     /**
     @Override
@@ -79,6 +65,7 @@ public class FoodList extends AppCompatActivity {
     }
     public class CustomList extends ArrayAdapter<String> {
         private final Activity context;
+        RatingBar rating;
         public CustomList(Activity context) {
             super(context, R.layout.listitem, values);
             this.context = context;
@@ -86,7 +73,17 @@ public class FoodList extends AppCompatActivity {
         @Override
         public View getView(int position, View view, ViewGroup parent) {
             LayoutInflater inflater = context.getLayoutInflater();
-            View rowView = inflater.inflate(R.layout.listitem,null,true);
+            View rowView = inflater.inflate(R.layout.listitem, null, true);
+
+            rating = (RatingBar) rowView.findViewById(R.id.ratingBar1);
+            rating.setStepSize((float) 0.5);        //별 색깔이 1칸씩줄어들고 늘어남 0.5로하면 반칸씩 들어감
+            rating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                @Override
+                public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                    dbinsert db = new dbinsert();
+                    db.insert(deviceID,"일식","고등어",rating);
+                }
+            });
             return rowView;
         }
     }
