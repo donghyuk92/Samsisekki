@@ -1,17 +1,12 @@
 package com.example.samsisekki;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,7 +31,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
     protected static final String PREFS_FILE = "device_id.xml";
@@ -136,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
         dtToggle.onConfigurationChanged(newConfig);
     }
+
     // Options Menu (ActionBar Menu)
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -143,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+    /**
     // When Options Menu is selected
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -156,15 +152,18 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-/**
+**/
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         if(dtToggle.onOptionsItemSelected(item)){
             return true;
+        } else if (item.getItemId() == R.id.refresh) {
+            syncSQLiteMySQLDB();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
- **/
+
     @Override
     public void onStart() {
         Log.d(this.getClass().getSimpleName(), "onStart()");
@@ -211,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
         // Show ProgressBar
         prgDialog.show();
         // Make Http call to getusers.php
-        client.post("http://http://117.17.188.146/donghyuk/sync/script/getusers.php", params, new AsyncHttpResponseHandler() {
+        client.post("http://117.17.188.146/donghyuk/sync/script/getusers.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(String response) {
                 // Hide ProgressBar
@@ -285,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
         RequestParams params = new RequestParams();
         params.put("syncsts", json);
         // Make Http call to updatesyncsts.php with JSON parameter which has Sync statuses of Users
-        client.post("http://192.168.2.4:9000/mysqlsqlitesync/updatesyncsts.php", params, new AsyncHttpResponseHandler() {
+        client.post("http:////117.17.188.146/donghyuk/sync/script/updatesyncsts.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(String response) {
                 Toast.makeText(getApplicationContext(), "MySQL DB has been informed about Sync activity", Toast.LENGTH_LONG).show();
