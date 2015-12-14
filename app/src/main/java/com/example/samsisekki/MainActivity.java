@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         prgDialog = new ProgressDialog(this);
         prgDialog.setMessage("Transferring Data from Remote MySQL DB and Syncing SQLite. Please wait...");
         prgDialog.setCancelable(false);
-
+/**
         //Device ID 생성, sharedpreferences 에 있으면
         SharedPreferences pref = getSharedPreferences(PREFS_FILE, MODE_PRIVATE);
         String deviceID = pref.getString(PREFS_DEVICE_ID,"NULL");
@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
             if(deviceID=="NULL") {
                new DeviceUuidFactory(this);
             }
+**/
 
         // Fragments
         fragGrid = ImageGridFragment.newInstance();
@@ -117,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        //syncSQLiteMySQLDB();
     }
 
     @Override
@@ -167,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         Log.d(this.getClass().getSimpleName(), "onStart()");
+        syncSQLiteMySQLDB();
         super.onStart();
     }
 
@@ -218,7 +221,6 @@ public class MainActivity extends AppCompatActivity {
                 // Update SQLite DB with response sent by getusers.php
                 updateSQLite(response);
             }
-
             // When error occured
             @Override
             public void onFailure(int statusCode, Throwable error, String content) {
@@ -238,14 +240,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateSQLite(String response){
-        ArrayList<HashMap<String, String>> usersynclist;
-        usersynclist = new ArrayList<HashMap<String, String>>();
         // Create GSON object
         Gson gson = new GsonBuilder().create();
         try {
             // Extract JSON array from the response
             JSONArray arr = new JSONArray(response);
-            System.out.println(arr.length());
             // If no of array elements is not zero
             if(arr.length() != 0){
                 // Loop through each array element, get JSON object which has userid and username
@@ -255,24 +254,22 @@ public class MainActivity extends AppCompatActivity {
                     // DB QueryValues Object to insert into SQLite
                     queryValues = new HashMap<String, String>();
                     // Add userID extracted from Object
-                    queryValues.put("userId", obj.get("userId").toString());
+                    queryValues.put("deviceID", obj.get("deviceID").toString());
                     // Add userName extracted from Object
-                    queryValues.put("userName", obj.get("userName").toString());
+                    queryValues.put("inserttime", obj.get("inserttime").toString());
+                    queryValues.put("class", obj.get("class").toString());
+                    queryValues.put("menu", obj.get("menu").toString());
+                    queryValues.put("rating", obj.get("rating").toString());
+                    queryValues.put("url", obj.get("url").toString());
                     // Insert User into SQLite DB
                     controller.insertUser(queryValues);
-                    HashMap<String, String> map = new HashMap<String, String>();
-                    // Add status for each User in Hashmap
-                    map.put("Id", obj.get("userId").toString());
-                    map.put("status", "1");
-                    usersynclist.add(map);
                 }
                 // Inform Remote MySQL DB about the completion of Sync activity by passing Sync status of Users
-                updateMySQLSyncSts(gson.toJson(usersynclist));
+                //updateMySQLSyncSts(gson.toJson(usersynclist));
                 // Reload the Main Activity
-                reloadActivity();
+                //reloadActivity();
             }
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

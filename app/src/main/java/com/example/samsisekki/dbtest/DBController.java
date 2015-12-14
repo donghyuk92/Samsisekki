@@ -11,20 +11,25 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBController  extends SQLiteOpenHelper {
 
+    SQLiteDatabase db;
+
 	public DBController(Context applicationcontext) {
         super(applicationcontext, "user.db", null, 1);
     }
 	//Creates Table
 	@Override
 	public void onCreate(SQLiteDatabase database) {
+        db = database;
 		String query;
-		query = "CREATE TABLE users ( userId INTEGER, userName TEXT)";
+		query = "CREATE TABLE IF NOT EXISTS test (" +
+                " deviceID varchar(40), inserttime TIMESTAMP, class varchar(10)," +
+                " menu varchar(30), rating float, url varchar(50) )";
         database.execSQL(query);
 	}
 	@Override
 	public void onUpgrade(SQLiteDatabase database, int version_old, int current_version) {
 		String query;
-		query = "DROP TABLE IF EXISTS users";
+		query = "DROP TABLE IF EXISTS test";
 		database.execSQL(query);
         onCreate(database);
 	}
@@ -35,14 +40,26 @@ public class DBController  extends SQLiteOpenHelper {
 	 * @param queryValues
 	 */
 	public void insertUser(HashMap<String, String> queryValues) {
-		SQLiteDatabase database = this.getWritableDatabase();
-		ContentValues values = new ContentValues();
-		values.put("userId", queryValues.get("userId"));
-		values.put("userName", queryValues.get("userName"));
-		database.insert("users", null, values);
+
+        SQLiteDatabase database = this.getWritableDatabase();
+
+        String query;
+        query = "CREATE TABLE IF NOT EXISTS test (" +
+                " deviceID varchar(40), inserttime TIMESTAMP, class varchar(10)," +
+                " menu varchar(30), rating float, url varchar(50) )";
+        database.execSQL(query);
+
+        ContentValues values = new ContentValues();
+        values.put("deviceID", queryValues.get("deviceID"));
+        values.put("inserttime", queryValues.get("inserttime"));
+        values.put("class", queryValues.get("class"));
+        values.put("menu", queryValues.get("menu"));
+        values.put("rating", queryValues.get("rating"));
+        values.put("url", queryValues.get("url"));
+		database.insert("test", null, values);
 		database.close();
 	}
-	
+
 	/**
 	 * Get list of Users from SQLite DB as Array List
 	 * @return

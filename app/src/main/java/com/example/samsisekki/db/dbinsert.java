@@ -15,10 +15,9 @@ public class dbinsert extends Activity {
     private static final String IP = "117.17.188.146";
     phpInsert task_insert = new phpInsert();
 
-    public void insert(String deviceID, String clas, String menu, Float rating) {
-        String query = "http://"+IP+"/donghyuk/insert.php?deviceID="+deviceID+"&class="+clas+"&menu="+menu+"&rating="+rating;
+    public void insert(String deviceID, String clas, String menu, Float rating, String url) {
+        String query = "http://"+IP+"/donghyuk/insert.php?deviceID="+deviceID+"&class="+clas+"&menu="+menu+"&rating="+rating+"&url="+url;
         task_insert.execute(query);
-
     }
 
     private class phpInsert extends AsyncTask<String,Integer,String> {
@@ -44,14 +43,10 @@ public class dbinsert extends Activity {
             return "1";
 
         }
-        /**
+        @Override
         protected void onPostExecute(String str){
-            if(str.equals("1")){
-                Toast.makeText(getCurrentFocus().getContext(), "평가가 반영됬습니다!", Toast.LENGTH_LONG).show();
-            }else{
-                Toast.makeText(getCurrentFocus().getContext(),"평가가 반영되지 않았습니다. 인터넷 연결 상태를 확인해주세요!",Toast.LENGTH_LONG).show();
-            }
+            super.onPostExecute(str);
         }
-         **/
+
     }
 }

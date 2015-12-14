@@ -81,7 +81,7 @@ public class FoodList extends AppCompatActivity {
                 @Override
                 public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                     dbinsert db = new dbinsert();
-                    db.insert(deviceID,"일식","고등어",rating);
+                    db.insert(deviceID,"일식","고등어",rating,"http://www.naver.com/");
                 }
             });
             return rowView;
