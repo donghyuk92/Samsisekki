@@ -80,8 +80,9 @@ public class FoodList extends AppCompatActivity {
             rating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                 @Override
                 public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                    Toast.makeText(getContext(), Float.toString(rating), Toast.LENGTH_SHORT).show();
                     dbinsert db = new dbinsert();
-                    db.insert(deviceID,"일식","고등어",rating,"http://www.naver.com/");
+                    db.insert(deviceID,"일식","고등어",rating,"naver");
                 }
             });
             return rowView;

@@ -1,25 +1,22 @@
 package com.example.samsisekki;
 
+import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.samsisekki.dbtest.DBController;
 import com.example.user.menu4u.R;
-
-import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,13 +24,11 @@ import java.util.ArrayList;
  */
 public class History extends Fragment {
 
-    ArrayList<String> arrlist = null;
-    ArrayList<String> arr_id_list = null;
     SQLiteDatabase database;
-    String dbName = "test_db_name";
     private ListView    m_ListView;
     private CustomAdapter   m_Adapter;
-
+    String deviceID;
+    DBController db;
 
     public static History newInstance(){
         History fragment = new History();
@@ -60,29 +55,19 @@ public class History extends Fragment {
 
             // ListView에 어댑터 연결
             m_ListView.setAdapter(m_Adapter);
+            DeviceUuidFactory dev = new DeviceUuidFactory(getContext());
+            deviceID = dev.getDeviceID();
 
-            // ListView에 아이템 추가
-            m_Adapter.add("하스스톤");
-            m_Adapter.add("몬스터 헌터");
-            m_Adapter.add("디아블로");
-            m_Adapter.add("와우");
-            m_Adapter.add("리니지");
-            m_Adapter.add("안드로이드");
-            m_Adapter.add("아이폰");            m_Adapter.add("하스스톤");
-            m_Adapter.add("몬스터 헌터");
-            m_Adapter.add("디아블로");
-            m_Adapter.add("와우");
-            m_Adapter.add("리니지");
-            m_Adapter.add("안드로이드");
-            m_Adapter.add("아이폰");            m_Adapter.add("하스스톤");
-            m_Adapter.add("몬스터 헌터");
-            m_Adapter.add("디아블로");
-            m_Adapter.add("와우");
-            m_Adapter.add("리니지");
-            m_Adapter.add("안드로이드");
-            m_Adapter.add("아이폰");
+            //getHist();
+            Cursor result = db.getHist();
+            while(!result.isAfterLast()){
+                m_Adapter.add(result.getString(0));
+                m_Adapter.add(result.getString(1));
+                result.moveToNext();
+            }
+            result.close();
 
-        m_ListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            m_ListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
@@ -95,10 +80,10 @@ public class History extends Fragment {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                    //    String position = get(selectedPos);
-                    //    final String sql = "delete from test_table where id = "+ position;
+                        String position = Integer.toString(which);
+                        final String sql = "delete from test where deviceID='"+ deviceID+"' and menu='"+deviceID+"';";
                         dialog.dismiss();
-                    //    database.execSQL(sql);
+                        database.execSQL(sql);
                     }
                 });
 
@@ -176,17 +161,12 @@ public class History extends Fragment {
         Log.d(this.getClass().getSimpleName(), "onSaveInstanceState()");
         super.onSaveInstanceState(outState);
     }
-    public void selectData(){
-        String sql = "select * from test_table";
-        Cursor result = database.rawQuery(sql, null);
-        result.moveToFirst();
-        while(!result.isAfterLast()){
-            arr_id_list.add(result.getString(0));
-            arrlist.add(result.getString(1));
-            result.moveToNext();
-        }
-        result.close();
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        db = new DBController(activity);
     }
+
 
     /**
     @Override

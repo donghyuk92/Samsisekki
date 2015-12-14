@@ -6,7 +6,7 @@ package com.example.samsisekki.db;
 public class Contact {
 
     int id;
-    String name;
+    String  name;
     String phone_number;
 
     public Contact(){

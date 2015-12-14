@@ -63,15 +63,6 @@ public class MainActivity extends AppCompatActivity {
         prgDialog = new ProgressDialog(this);
         prgDialog.setMessage("Transferring Data from Remote MySQL DB and Syncing SQLite. Please wait...");
         prgDialog.setCancelable(false);
-/**
-        //Device ID 생성, sharedpreferences 에 있으면
-        SharedPreferences pref = getSharedPreferences(PREFS_FILE, MODE_PRIVATE);
-        String deviceID = pref.getString(PREFS_DEVICE_ID,"NULL");
-
-            if(deviceID=="NULL") {
-               new DeviceUuidFactory(this);
-            }
-**/
 
         // Fragments
         fragGrid = ImageGridFragment.newInstance();
@@ -169,7 +160,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         Log.d(this.getClass().getSimpleName(), "onStart()");
-        syncSQLiteMySQLDB();
         super.onStart();
     }
 
@@ -264,39 +254,9 @@ public class MainActivity extends AppCompatActivity {
                     // Insert User into SQLite DB
                     controller.insertUser(queryValues);
                 }
-                // Inform Remote MySQL DB about the completion of Sync activity by passing Sync status of Users
-                //updateMySQLSyncSts(gson.toJson(usersynclist));
-                // Reload the Main Activity
-                //reloadActivity();
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    // Method to inform remote MySQL DB about completion of Sync activity
-    public void updateMySQLSyncSts(String json) {
-        System.out.println(json);
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-        params.put("syncsts", json);
-        // Make Http call to updatesyncsts.php with JSON parameter which has Sync statuses of Users
-        client.post("http:////117.17.188.146/donghyuk/sync/script/updatesyncsts.php", params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(String response) {
-                Toast.makeText(getApplicationContext(), "MySQL DB has been informed about Sync activity", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onFailure(int statusCode, Throwable error, String content) {
-                Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    // Reload MainActivity
-    public void reloadActivity() {
-        Intent objIntent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(objIntent);
     }
 }

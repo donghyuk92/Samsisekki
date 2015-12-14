@@ -41,7 +41,7 @@ public class MainActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.dbtest);
 		// Get User records from SQLite DB
-		ArrayList<HashMap<String, String>> userList = controller.getAllUsers();
+		ArrayList<HashMap<String, String>> userList = controller.getHistory("asd");
 		// If users exists in SQLite DB
 		if (userList.size() != 0) {
 			// Set the User Array list in ListView

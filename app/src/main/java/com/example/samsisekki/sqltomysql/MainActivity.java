@@ -43,7 +43,7 @@ public class MainActivity extends ActionBarActivity {
 			ListView myList=(ListView)findViewById(android.R.id.list);
 			myList.setAdapter(adapter);
 			//Display Sync status of SQLite DB
-			Toast.makeText(getApplicationContext(), controller.getSyncStatus(), Toast.LENGTH_LONG).show();
+			//Toast.makeText(getApplicationContext(), controller.getSyncStatus(), Toast.LENGTH_LONG).show();
 		}
 		//Initialize Progress Dialog properties
 		prgDialog = new ProgressDialog(this);
