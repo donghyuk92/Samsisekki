@@ -1,7 +1,6 @@
 package com.example.samsisekki;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -12,12 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.example.samsisekki.db.dbinsert;
 import com.example.samsisekki.dbtest.DBController;
 import com.example.user.menu4u.R;
 
 
-public class Ranking extends Fragment {
+public class RankingFragment extends Fragment {
 
     SQLiteDatabase database;
     private ListView m_ListView;
@@ -25,20 +23,18 @@ public class Ranking extends Fragment {
     String deviceID;
     DBController db;
 
-    public static Ranking newInstance() {
-        Ranking fragment = new Ranking();
+    public static RankingFragment newInstance() {
+        RankingFragment fragment = new RankingFragment();
         return fragment;
     }
 
-    public Ranking() {
+    public RankingFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent = new Intent(getActivity(), dbinsert.class);
-        startActivity(intent);
     }
 
     @Override
@@ -50,7 +46,7 @@ public class Ranking extends Fragment {
         final View rootView = inflater.inflate(R.layout.ranklist_layout, container, false);
 
         // 커스텀 어댑터 생성
-        m_Adapter = new CustomAdapter();
+        m_Adapter = new CustomAdapter(getActivity());
 
         // Xml에서 추가한 ListView 연결
         m_ListView = (ListView) rootView.findViewById(R.id.ranklist);

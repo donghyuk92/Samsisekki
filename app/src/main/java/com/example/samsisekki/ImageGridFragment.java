@@ -76,10 +76,6 @@ public class ImageGridFragment extends Fragment implements AdapterView.OnItemCli
         mImageFetcher.addImageCache(getActivity().getSupportFragmentManager(), cacheParams);
     }
 
-    public final static Integer[] imageResIds = new Integer[] {
-            R.drawable.sam1
-            , R.drawable.sam2};
-
     public ImageGridFragment() {
         // Required empty public constructor
     }
@@ -299,7 +295,7 @@ public class ImageGridFragment extends Fragment implements AdapterView.OnItemCli
             }
 
             // Finally load the image asynchronously into the ImageView, this also takes care of
-            // setting a placeholder image while the background thread runs
+            // settingFragment a placeholder image while the background thread runs
             mImageFetcher.loadImage(Images.imageThumbUrls[position - mNumColumns], imageView);
             return imageView;
             //END_INCLUDE(load_gridview_item)

@@ -22,7 +22,7 @@ import com.example.user.menu4u.R;
  * A simple {@link Fragment} subclass.
  *
  */
-public class History extends Fragment {
+public class HistoryFragment extends Fragment {
 
     SQLiteDatabase database;
     private ListView    m_ListView;
@@ -30,13 +30,13 @@ public class History extends Fragment {
     String deviceID;
     DBController db;
 
-    public static History newInstance(){
-        History fragment = new History();
+    public static HistoryFragment newInstance(){
+        HistoryFragment fragment = new HistoryFragment();
         return fragment;
     }
 
 
-    public History() {
+    public HistoryFragment() {
         // Required empty public constructor
     }
 
@@ -48,7 +48,7 @@ public class History extends Fragment {
 
 
             // 커스텀 어댑터 생성
-            m_Adapter = new CustomAdapter();
+            m_Adapter = new CustomAdapter(getActivity());
 
             // Xml에서 추가한 ListView 연결
             m_ListView = (ListView) rootView.findViewById(R.id.historylist);
@@ -59,7 +59,7 @@ public class History extends Fragment {
             deviceID = dev.getDeviceID();
 
             //getHist();
-            Cursor result = db.getHist();
+            Cursor result = db.getHist(deviceID);
             while(!result.isAfterLast()){
                 m_Adapter.add(result.getString(0));
                 m_Adapter.add(result.getString(1));

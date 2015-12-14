@@ -13,15 +13,25 @@ import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.samsisekki.db.dbinsert;
 import com.example.user.menu4u.R;
 
 public class CustomAdapter extends BaseAdapter {
 
     // 문자열을 보관 할 ArrayList
     private ArrayList<String>   m_List = new ArrayList<String>();
+    Context context;
+    String deviceID;
+
+    CustomAdapter(Context context) {
+        this.context = context;
+        deviceID = new DeviceUuidFactory(context).getDeviceID();
+
+    }
 
     // 현재 아이템의 수를 리턴
     @Override
@@ -67,7 +77,7 @@ public class CustomAdapter extends BaseAdapter {
                     Toast.makeText(context, m_List.get(pos), Toast.LENGTH_SHORT).show();
                 }
             });
-
+            /**
             // 리스트 아이템을 터치 했을 때 이벤트 발생
             convertView.setOnClickListener(new OnClickListener() {
 
@@ -88,7 +98,19 @@ public class CustomAdapter extends BaseAdapter {
                     return true;
                 }
             });
+             **/
         }
+
+        RatingBar ratingBar;
+        ratingBar = (RatingBar) convertView.findViewById(R.id.ratingBar);
+        ratingBar.setStepSize((float) 0.5);        //별 색깔이 1칸씩줄어들고 늘어남 0.5로하면 반칸씩 들어감
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                dbinsert db = new dbinsert();
+                db.dbinsert(deviceID,"asd","qwe",rating,"naver");
+            }
+        });
 
         return convertView;
     }

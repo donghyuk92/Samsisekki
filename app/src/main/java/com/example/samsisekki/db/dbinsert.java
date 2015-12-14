@@ -15,8 +15,9 @@ public class dbinsert extends Activity {
     private static final String IP = "117.17.188.146";
     phpInsert task_insert = new phpInsert();
 
-    public void insert(String deviceID, String clas, String menu, Float rating, String url) {
+    public void dbinsert(String deviceID, String clas, String menu, Float rating, String url) {
         String query = "http://"+IP+"/donghyuk/insert.php?deviceID="+deviceID+"&class="+clas+"&menu="+menu+"&rating="+rating+"&url="+url;
+        Log.d("TAG", query);
         task_insert.execute(query);
     }
 

@@ -1,7 +1,5 @@
 package com.example.samsisekki;
 import android.app.ProgressDialog;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -29,7 +27,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,13 +38,14 @@ public class MainActivity extends AppCompatActivity {
 
     ListView lvDrawerList;
     ArrayAdapter<String> adtDrawerList;
-    String[] menuItems = new String[]{"Home", "History","Rank","Setting"};
+    String[] menuItems = new String[]{"No.1","어떤음식있지?","식지록","랭킹","알람 설정"};
 
     AlarmFragment alarmFragment;
-    ImageGridFragment fragGrid;
-    History history;
-    Ranking rank;
-    Setting setting;
+    RecommendFragment recommendFragment;
+    ImageGridFragment imageGridFragment;
+    HistoryFragment historyFragment;
+    RankingFragment rankingFragment;
+    SettingFragment settingFragment;
 
     // DB Class to perform DB related operations
     DBController controller = new DBController(this);
@@ -65,13 +63,14 @@ public class MainActivity extends AppCompatActivity {
         prgDialog.setCancelable(false);
 
         // Fragments
-        fragGrid = ImageGridFragment.newInstance();
-        history = History.newInstance();
-        rank= Ranking.newInstance();
-        setting = Setting.newInstance();
+        imageGridFragment = ImageGridFragment.newInstance();
+        historyFragment = HistoryFragment.newInstance();
+        rankingFragment = RankingFragment.newInstance();
+        settingFragment = SettingFragment.newInstance();
         alarmFragment = AlarmFragment.newInstance();
+        recommendFragment = recommendFragment.newInstance();
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fl_activity_main, fragGrid).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fl_activity_main, recommendFragment).commit();
 
         // Navigation drawer : menu lists
         lvDrawerList = (ListView) findViewById(R.id.lv_activity_main);
@@ -82,18 +81,22 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch(position){
                     case 0:
-                        mTitle = getString(R.string.title_section1);
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fl_activity_main, fragGrid).commit();
+                        mTitle = getString(R.string.title_section0);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fl_activity_main, recommendFragment).commit();
                         break;
                     case 1:
-                        mTitle = getString(R.string.title_section2);
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fl_activity_main, history).commit();
+                        mTitle = getString(R.string.title_section1);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fl_activity_main, imageGridFragment).commit();
                         break;
                     case 2:
-                        mTitle = getString(R.string.title_section3);
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fl_activity_main, rank).commit();
+                        mTitle = getString(R.string.title_section2);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fl_activity_main, historyFragment).commit();
                         break;
                     case 3:
+                        mTitle = getString(R.string.title_section3);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fl_activity_main, rankingFragment).commit();
+                        break;
+                    case 4:
                         mTitle = getString(R.string.title_section4);
                         getSupportFragmentManager().beginTransaction().replace(R.id.fl_activity_main, alarmFragment).commit();
                         break;

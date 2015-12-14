@@ -80,25 +80,22 @@ public class DBController  extends SQLiteOpenHelper {
 
         String query = "insert or ignore into test values ('"+deviceID+"', CURRENT_TIME, '"+clas+"','"+menu+"','"+rating+"','"+url+"');" +
                         "UPDATE test SET inserttime=CURRENT_TIME, rating='"+rating+"' where deviceID='"+deviceID+"' and menu='"+menu+"';";
-        Log.d("TAG", "aaaaaaaaaaaaaaaaaaakkkkkkkkkkkkkkkkkkkkkkkk" + query);
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);
         db.close();
     }
-    public Cursor getHist(){
-        String sql = "select * from test;";
+    public Cursor getHist(String deviceID){
+        String sql = "select * from test where deviceID='" + deviceID + "' order by inserttime desc;";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor result = database.rawQuery(sql, null);
         result.moveToFirst();
-        Log.d("TAG", "kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk" + result.getString(0));
         return result;
     }
     public Cursor getRank(){
-        String sql = "select menu,avg(rating) from test group by menu";
+        String sql = "select menu,avg(rating) from test group by menu;";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor result = database.rawQuery(sql, null);
         result.moveToFirst();
-        Log.d("TAG", "kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk" + result.getString(0));
         return result;
     }
 }

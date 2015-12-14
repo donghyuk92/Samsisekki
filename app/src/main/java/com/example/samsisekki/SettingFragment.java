@@ -1,7 +1,5 @@
 package com.example.samsisekki;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -16,16 +14,16 @@ import com.example.user.menu4u.R;
  * Created by 조수종 on 2015-11-16.
  */
 
-public class Setting extends Fragment {
+public class SettingFragment extends Fragment {
 
 
-    public static Setting newInstance(){
-        Setting fragment = new Setting();
+    public static SettingFragment newInstance(){
+        SettingFragment fragment = new SettingFragment();
         return fragment;
     }
 
 
-    public Setting() {
+    public SettingFragment() {
         // Required empty public constructor
     }
 
