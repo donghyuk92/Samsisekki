@@ -62,7 +62,7 @@ public class HistoryFragment extends Fragment {
             Cursor result = db.getHist(deviceID);
             while(!result.isAfterLast()){
                 m_Adapter.add(result.getString(0));
-                m_Adapter.add(result.getString(1));
+                m_Adapter.addurl(result.getString(1));
                 result.moveToNext();
             }
             result.close();

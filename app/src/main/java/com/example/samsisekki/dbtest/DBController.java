@@ -58,7 +58,6 @@ public class DBController  extends SQLiteOpenHelper {
 		ArrayList<HashMap<String, String>> usersList;
 		usersList = new ArrayList<HashMap<String, String>>();
 		String selectQuery = "SELECT * from test where deviceID='" + deviceID + "' order by inserttime desc";
-        Log.d("TAG", "aaaaaaaaaaaaaaaaaaaaaaaaaaaa" + selectQuery);
         SQLiteDatabase database = this.getWritableDatabase();
 	    Cursor cursor = database.rawQuery(selectQuery, null);
 	    if (cursor.moveToFirst()) {
@@ -80,22 +79,66 @@ public class DBController  extends SQLiteOpenHelper {
 
         String query = "insert or ignore into test values ('"+deviceID+"', CURRENT_TIME, '"+clas+"','"+menu+"','"+rating+"','"+url+"');" +
                         "UPDATE test SET inserttime=CURRENT_TIME, rating='"+rating+"' where deviceID='"+deviceID+"' and menu='"+menu+"';";
-        SQLiteDatabase db = getWritableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL(query);
         db.close();
     }
+
     public Cursor getHist(String deviceID){
-        String sql = "select * from test where deviceID='" + deviceID + "' order by inserttime desc;";
+        String sql = "select menu,url from test where deviceID='" + deviceID + "' order by inserttime asc;";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor result = database.rawQuery(sql, null);
         result.moveToFirst();
         return result;
     }
     public Cursor getRank(){
-        String sql = "select menu,avg(rating) from test group by menu;";
+        String sql = "select menu,avg,url from (select menu,avg(rating) as avg,url from test group by menu) order by avg desc;";
+        SQLiteDatabase database = this.getWritableDatabase();
+
+        Cursor result = database.rawQuery(sql, null);
+        result.moveToFirst();
+        return result;
+    }
+    public Cursor getRelated(String menu) {
+        String sql = "select menu,url from test where menu like '%"+menu+"%' group by menu;";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor result = database.rawQuery(sql, null);
         result.moveToFirst();
         return result;
+    }
+    public Cursor getIDs() {
+        String sql = "select distinct deviceID from test;";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor result = database.rawQuery(sql, null);
+        result.moveToFirst();
+        return result;
+    }
+    public Cursor getIDVector(String deviceID) {
+        String sql = "select menu, rating from test where deviceID='" + deviceID + "';";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor result = database.rawQuery(sql, null);
+        result.moveToFirst();
+        return result;
+    }
+    public void drop() {
+        String query = "DROP TABLE IF EXISTS test";
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+    public void delete() {
+        String query = "delete from test;";
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
+    public void createtbl() {
+        String query = "CREATE TABLE IF NOT EXISTS test (" +
+                " deviceID varchar(40), inserttime TIMESTAMP, class varchar(10)," +
+                " menu varchar(30), rating float, url varchar(50), PRIMARY KEY (deviceID, menu) )";
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(query);
+        db.close();
     }
 }

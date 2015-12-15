@@ -6,6 +6,7 @@ package com.example.samsisekki;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,25 +14,34 @@ import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.samsisekki.db.dbinsert;
+import com.example.samsisekki.displayingbitmaps.provider.Images;
+import com.example.samsisekki.displayingbitmaps.util.ImageCache;
+import com.example.samsisekki.displayingbitmaps.util.ImageFetcher;
+import com.example.samsisekki.parsing.parsing;
 import com.example.user.menu4u.R;
 
 public class CustomAdapter extends BaseAdapter {
 
     // 문자열을 보관 할 ArrayList
     private ArrayList<String>   m_List = new ArrayList<String>();
+    private ArrayList<String>   url = new ArrayList<String>();
     Context context;
     String deviceID;
+    RatingBar ratingBar;
+    Boolean ratingunable=false;
 
     CustomAdapter(Context context) {
         this.context = context;
         deviceID = new DeviceUuidFactory(context).getDeviceID();
-
     }
+    ImageFetcher mImageFetcher;
+    private static final String IMAGE_CACHE_DIR = "thumbs";
 
     // 현재 아이템의 수를 리턴
     @Override
@@ -62,10 +72,10 @@ public class CustomAdapter extends BaseAdapter {
             // view가 null일 경우 커스텀 레이아웃을 얻어 옴
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.listitem, parent, false);
-
+        }
             // TextView에 현재 position의 문자열 추가
-            TextView text = (TextView) convertView.findViewById(R.id.text1);
-            text.setText(m_List.get(position));
+            TextView textView = (TextView) convertView.findViewById(R.id.text1);
+            textView.setText(m_List.get(position));
 
             // 버튼을 터치 했을 때 이벤트 발생
             Button btn = (Button) convertView.findViewById(R.id.move);
@@ -75,6 +85,9 @@ public class CustomAdapter extends BaseAdapter {
                 public void onClick(View v) {
                     // 터치 시 해당 아이템 이름 출력
                     Toast.makeText(context, m_List.get(pos), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(context, parsing.class);
+                    intent.putExtra("menu", m_List.get(pos));
+                    context.startActivity(intent);
                 }
             });
             /**
@@ -99,19 +112,29 @@ public class CustomAdapter extends BaseAdapter {
                 }
             });
              **/
-        }
 
-        RatingBar ratingBar;
+        ImageCache.ImageCacheParams cacheParams =
+                new ImageCache.ImageCacheParams(context, IMAGE_CACHE_DIR);
+        cacheParams.setMemCacheSizePercent(0.25f); // Set memory cache to 25% of app memory
+        int mImageThumbSize = context.getResources().getDimensionPixelSize(R.dimen.image_thumbnail_size);
+        mImageFetcher = new ImageFetcher(context, mImageThumbSize);
+        mImageFetcher.addImageCache(context, cacheParams);
+        ImageView imageView = (ImageView) convertView.findViewById(R.id.imageView2);
+        mImageFetcher.loadImage(Images.imageThumbUrls[position],imageView);
+
+
         ratingBar = (RatingBar) convertView.findViewById(R.id.ratingBar);
         ratingBar.setStepSize((float) 0.5);        //별 색깔이 1칸씩줄어들고 늘어남 0.5로하면 반칸씩 들어감
+        //ratingBar.setRating((float) 2.5);      // 처음보여줄때(색깔이 한개도없음) default 값이 0  이다
+        if(ratingunable)
+            ratingBar.setIsIndicator(true);
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 dbinsert db = new dbinsert();
-                db.dbinsert(deviceID,"asd","qwe",rating,"naver");
+                db.dbinsert(deviceID,"asd", Images.menu[pos] ,rating, Images.imageThumbUrls[pos]);
             }
         });
-
         return convertView;
     }
 
@@ -119,9 +142,15 @@ public class CustomAdapter extends BaseAdapter {
     public void add(String _msg) {
         m_List.add(_msg);
     }
+    public void addurl(String _msg) {
+        url.add(_msg);
+    }
 
     // 외부에서 아이템 삭제 요청 시 사용
     public void remove(int _position) {
         m_List.remove(_position);
+    }
+    public void rateunable() {
+        ratingunable = true;
     }
 }

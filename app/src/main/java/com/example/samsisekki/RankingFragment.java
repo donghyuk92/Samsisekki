@@ -47,6 +47,7 @@ public class RankingFragment extends Fragment {
 
         // 커스텀 어댑터 생성
         m_Adapter = new CustomAdapter(getActivity());
+        m_Adapter.rateunable();
 
         // Xml에서 추가한 ListView 연결
         m_ListView = (ListView) rootView.findViewById(R.id.ranklist);
@@ -56,11 +57,11 @@ public class RankingFragment extends Fragment {
         DeviceUuidFactory dev = new DeviceUuidFactory(getContext());
         deviceID = dev.getDeviceID();
 
-        //getHist();
+        //getRank();
         Cursor result = db.getRank();
         while(!result.isAfterLast()){
-            m_Adapter.add(result.getString(0));
-            m_Adapter.add(result.getString(1));
+            m_Adapter.add(result.getString(0) + " 평점 : "  + result.getString(1));
+            m_Adapter.addurl(result.getString(2));
             result.moveToNext();
         }
         result.close();

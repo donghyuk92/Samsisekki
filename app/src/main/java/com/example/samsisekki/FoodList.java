@@ -17,6 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.samsisekki.dbtest.DBController;
+import com.example.samsisekki.displayingbitmaps.provider.Images;
+import com.example.samsisekki.displayingbitmaps.ui.ImageDetailActivity;
 import com.example.samsisekki.parsing.parsing;
 import com.example.user.menu4u.R;
 
@@ -32,7 +34,6 @@ public class FoodList extends AppCompatActivity {
     private CustomAdapter   m_Adapter;
     DBController db;
 
-    String[] values = new String[] { "후라이드치킨", "양념치킨", "간장치킨", "퓨전치킨", "마늘치킨" };
     DeviceUuidFactory dev;
     String deviceID;
 
@@ -42,7 +43,7 @@ public class FoodList extends AppCompatActivity {
         setContentView(R.layout.foodlist);
         dev = new DeviceUuidFactory(this);
         deviceID = dev.getDeviceID();
-
+        db = new DBController(this);
         // 커스텀 어댑터 생성
         m_Adapter = new CustomAdapter(this);
 
@@ -52,22 +53,21 @@ public class FoodList extends AppCompatActivity {
         // ListView에 어댑터 연결
         m_ListView.setAdapter(m_Adapter);
 
-        for(String item : values)
-            m_Adapter.add(item);
-        /**
-        Cursor result = db.getHist(deviceID);
-        result.moveToFirst();
+        Intent intent = getIntent();
+        int position = intent.getIntExtra(ImageDetailActivity.EXTRA_IMAGE, 1);
+
+        Cursor result = db.getRelated(Images.menu[position]);
         while(!result.isAfterLast()){
             m_Adapter.add(result.getString(0));
-            m_Adapter.add(result.getString(1));
+            m_Adapter.addurl(result.getString(1));
             result.moveToNext();
         }
         result.close();
-**/
+
         m_ListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getBaseContext(), values[position], Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), Images.menu[position], Toast.LENGTH_SHORT).show();
                 return false;
             }
 
@@ -76,7 +76,7 @@ public class FoodList extends AppCompatActivity {
         m_ListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getBaseContext(), values[position], Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), Images.menu[position], Toast.LENGTH_SHORT).show();
                 String item = (String) m_ListView.getSelectedItem();
                 Toast.makeText(getApplicationContext(), item + " selected", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getApplicationContext(), parsing.class);
@@ -85,11 +85,6 @@ public class FoodList extends AppCompatActivity {
             }
         });
     }
-        /**
-        rating.setRating((float) 2.5);      // 처음보여줄때(색깔이 한개도없음) default 값이 0  이다
-        rating.setIsIndicator(false);           //true - 별점만 표시 사용자가 변경 불가 , false - 사용자가 변경가능
-**/
-
     public void move(View v) {
         Intent intent = new Intent(this, parsing.class);
         intent.putExtra("name","치킨");

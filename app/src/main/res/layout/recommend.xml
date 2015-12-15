@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    android:gravity="center"
+    android:weightSum="5">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/logo"
+        android:id="@+id/imageView2" />
+
+    <ImageView
+        android:layout_width="146dp"
+        android:layout_height="match_parent"
+        android:id="@+id/imageView"
+        android:layout_above="@+id/btnCancel"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="#fffff9"
+        android:layout_below="@+id/imageView2" />
+
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="다른거!"
+        android:textColor="@color/abc_secondary_text_material_dark"
+        style="@style/Base.TextAppearance.AppCompat.Body1"
+        android:textSize="30dp"
+        android:layout_gravity="right"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ratingBar2"
+        android:layout_alignTop="@+id/btnCancel"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/btnCancel"
+        android:layout_toStartOf="@+id/btnCancel" />
+
+</RelativeLayout>

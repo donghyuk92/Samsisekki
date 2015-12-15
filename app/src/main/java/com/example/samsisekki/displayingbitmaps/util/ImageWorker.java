@@ -145,6 +145,12 @@ public abstract class ImageWorker {
         new CacheAsyncTask().execute(MESSAGE_INIT_DISK_CACHE);
     }
 
+    public void addImageCache(Context context, ImageCache.ImageCacheParams cacheParams) {
+        mImageCacheParams = cacheParams;
+        mImageCache = null;
+        new CacheAsyncTask().execute(MESSAGE_INIT_DISK_CACHE);
+    }
+
     /**
      * If set to true, the image will fade-in once it has been loaded by the background thread.
      */

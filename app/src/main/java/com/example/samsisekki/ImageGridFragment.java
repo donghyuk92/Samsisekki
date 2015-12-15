@@ -49,7 +49,6 @@ public class ImageGridFragment extends Fragment implements AdapterView.OnItemCli
     private ImageAdapter mAdapter;
     private ImageFetcher mImageFetcher;
 
-
     public static ImageGridFragment newInstance() {
         ImageGridFragment fragment = new ImageGridFragment();
         return fragment;

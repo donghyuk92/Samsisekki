@@ -38,7 +38,7 @@ public class parsing extends Activity {
             text= (TextView)findViewById(R.id.text);
 
             Intent intent = getIntent();
-            String name = intent.getStringExtra("name");
+            String name = intent.getStringExtra("menu");
 
             edit.setText(name);
 

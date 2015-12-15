@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.samsisekki.Alarm.AlarmFragment;
 import com.example.samsisekki.dbtest.DBController;
+import com.example.samsisekki.displayingbitmaps.provider.Images;
 import com.example.user.menu4u.R;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     ListView lvDrawerList;
     ArrayAdapter<String> adtDrawerList;
-    String[] menuItems = new String[]{"No.1","어떤음식있지?","식지록","랭킹","알람 설정"};
+    String[] menuItems = new String[]{"옛다!","어떤 음식있지?","나의 식지록","최고의 메뉴","알람 설정"};
 
     AlarmFragment alarmFragment;
     RecommendFragment recommendFragment;
@@ -48,14 +49,18 @@ public class MainActivity extends AppCompatActivity {
     SettingFragment settingFragment;
 
     // DB Class to perform DB related operations
-    DBController controller = new DBController(this);
+    DBController controller;
     // Progress Dialog Object
     ProgressDialog prgDialog;
     HashMap<String, String> queryValues;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        controller = new DBController(this);
+        controller.createtbl();
 
         // Initialize Progress Dialog properties
         prgDialog = new ProgressDialog(this);
@@ -68,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         rankingFragment = RankingFragment.newInstance();
         settingFragment = SettingFragment.newInstance();
         alarmFragment = AlarmFragment.newInstance();
-        recommendFragment = recommendFragment.newInstance();
+        recommendFragment = RecommendFragment.newInstance();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fl_activity_main, recommendFragment).commit();
 
@@ -112,6 +117,9 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        for(String item : Images.menu)
+            Images.menu2.add(item);
+
         //syncSQLiteMySQLDB();
     }
 
@@ -154,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
         if(dtToggle.onOptionsItemSelected(item)){
             return true;
         } else if (item.getItemId() == R.id.refresh) {
+            delcreate();
             syncSQLiteMySQLDB();
             return true;
         }
@@ -214,6 +223,7 @@ public class MainActivity extends AppCompatActivity {
                 // Update SQLite DB with response sent by getusers.php
                 updateSQLite(response);
             }
+
             // When error occured
             @Override
             public void onFailure(int statusCode, Throwable error, String content) {
@@ -261,5 +271,9 @@ public class MainActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+    public void delcreate() {
+        controller.delete();
+        controller.createtbl();
     }
 }
