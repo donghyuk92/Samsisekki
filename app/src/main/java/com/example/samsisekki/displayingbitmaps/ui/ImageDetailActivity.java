@@ -18,6 +18,7 @@ package com.example.samsisekki.displayingbitmaps.ui;
 
 import android.annotation.TargetApi;
 import android.app.ActionBar;
+import android.content.Intent;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -27,6 +28,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -56,7 +58,7 @@ public class ImageDetailActivity extends FragmentActivity implements OnClickList
             Utils.enableStrictMode();
         }
         super.onCreate(savedInstanceState);
-  //      setContentView(R.layout.image_detail_pager);
+        setContentView(R.layout.image_detail_pager);
 
         // Fetch screen height and width, to use as our max size when loading images as this
         // activity runs full screen
@@ -82,10 +84,10 @@ public class ImageDetailActivity extends FragmentActivity implements OnClickList
         mImageFetcher.setImageFadeIn(false);
 
         // Set up ViewPager and backing adapter
-        mAdapter = new ImagePagerAdapter(getSupportFragmentManager(), Images.imageThumbUrls.length);
-    //    mPager = (ViewPager) findViewById(R.id.pager);
+        mAdapter = new ImagePagerAdapter(getSupportFragmentManager(), 1);
+        mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(mAdapter);
-      //  mPager.setPageMargin((int) getResources().getDimension(R.dimen.horizontal_page_margin));
+        mPager.setPageMargin((int) getResources().getDimension(R.dimen.horizontal_page_margin));
         mPager.setOffscreenPageLimit(2);
 
         // Set up activity to go full screen
@@ -93,12 +95,13 @@ public class ImageDetailActivity extends FragmentActivity implements OnClickList
 
         // Enable some additional newer visibility and ActionBar features to create a more
         // immersive photo viewing experience
+        /**
         if (Utils.hasHoneycomb()) {
             final ActionBar actionBar = getActionBar();
 
             // Hide title text and set home as up
-            actionBar.setDisplayShowTitleEnabled(false);
-            actionBar.setDisplayHomeAsUpEnabled(true);
+            //actionBar.setDisplayShowTitleEnabled(false);
+            //actionBar.setDisplayHomeAsUpEnabled(true);
 
             // Hide and show the ActionBar as the visibility changes
             mPager.setOnSystemUiVisibilityChangeListener(
@@ -115,9 +118,9 @@ public class ImageDetailActivity extends FragmentActivity implements OnClickList
 
             // Start low profile mode and hide ActionBar
             mPager.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
-            actionBar.hide();
+            //actionBar.hide();
         }
-
+**/
         // Set the current item based on the extra passed in to this activity
         final int extraCurrentItem = getIntent().getIntExtra(EXTRA_IMAGE, -1);
         if (extraCurrentItem != -1) {
@@ -192,7 +195,9 @@ public class ImageDetailActivity extends FragmentActivity implements OnClickList
 
         @Override
         public Fragment getItem(int position) {
-            return ImageDetailFragment.newInstance(Images.imageThumbUrls[position]);
+            Intent intent = getIntent();
+            String picurl = intent.getStringExtra("picture");
+            return ImageDetailFragment.newInstance(picurl);
         }
     }
 

@@ -168,16 +168,16 @@ public class ImageGridFragment extends Fragment implements AdapterView.OnItemCli
     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
         final Intent i = new Intent(getActivity(), FoodList.class);
         i.putExtra(ImageDetailActivity.EXTRA_IMAGE, (int) id);
-        /**if (Utils.hasJellyBean()) {
+        if (Utils.hasJellyBean()) {
             // makeThumbnailScaleUpAnimation() looks kind of ugly here as the loading spinner may
             // show plus the thumbnail image in GridView is cropped. so using
             // makeScaleUpAnimation() instead.
             ActivityOptions options =
                     ActivityOptions.makeScaleUpAnimation(v, 0, 0, v.getWidth(), v.getHeight());
             getActivity().startActivity(i, options.toBundle());
-        } else {**/
+        } else {
             startActivity(i);
-    //    }
+        }
     }
 
     /**

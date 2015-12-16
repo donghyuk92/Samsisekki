@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,6 +34,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class RecommendFragment extends Fragment {
@@ -73,15 +75,15 @@ public class RecommendFragment extends Fragment {
         result.close();
 
         ArrayList<Vector> vectors = new ArrayList<Vector>();
+
         int size = Images.menu.length;
         for(int j=0; j<IDs.size(); j++) {
             float[] vec = new float[size];
             String deviceID = IDs.get(j);
             Cursor result2 = db.getIDVector(deviceID);
             while(!result2.isAfterLast()){
-                //int k = Arrays.asList(Images.menu).indexOf(result2.getString(0));
-                //int k = Images.menu2.indexOf(result2.getString(0));
- //               vec[k] = Float.parseFloat(result2.getString(1));
+                int k = Arrays.asList(Images.menu).indexOf(result2.getString(0));
+                vec[k] = Float.parseFloat(result2.getString(1));
                 result2.moveToNext();
             }
             result2.close();
@@ -91,7 +93,7 @@ public class RecommendFragment extends Fragment {
         }
 
         int me = IDs.indexOf(deviceID);
-//        index = VectorUtil.getRecommended(vectors, me);
+        index = VectorUtil.getRecommended(vectors, me);
 
         ImageCache.ImageCacheParams cacheParams =
                 new ImageCache.ImageCacheParams(getActivity(), IMAGE_CACHE_DIR);

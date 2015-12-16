@@ -116,10 +116,6 @@ public class MainActivity extends AppCompatActivity {
         dlDrawer.setDrawerListener(dtToggle);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        for(String item : Images.menu)
-            Images.menu2.add(item);
-
     }
 
     @Override

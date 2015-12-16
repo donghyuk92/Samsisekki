@@ -12,7 +12,10 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.samsisekki.dbtest.DBController;
+import com.example.samsisekki.displayingbitmaps.provider.Images;
 import com.example.user.menu4u.R;
+
+import java.util.ArrayList;
 
 
 public class RankingFragment extends Fragment {
@@ -56,15 +59,26 @@ public class RankingFragment extends Fragment {
         DeviceUuidFactory dev = new DeviceUuidFactory(getContext());
         deviceID = dev.getDeviceID();
 
+        ArrayList<String> menu = new ArrayList<String>();
         //getRank();
         Cursor result = db.getRank();
         while(!result.isAfterLast()){
-            m_Adapter.add(result.getString(0) + " 평점 : "  + result.getString(1));
+            m_Adapter.add(result.getString(0) + " 평점 : " + result.getString(1));
             m_Adapter.addurl(result.getString(2));
+            menu.add(result.getString(0));
             result.moveToNext();
         }
         result.close();
 
+        for(int i=0; i<menu.size(); i++) {
+            Cursor result2 = db.getRate(deviceID, menu.get(i));
+            if (!result2.isAfterLast())
+                m_Adapter.addrating(result2.getString(0));
+            else
+                m_Adapter.addrating("Null");
+            result2.close();
+
+        }
         return rootView;
     }
 

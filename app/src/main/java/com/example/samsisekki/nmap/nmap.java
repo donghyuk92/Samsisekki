@@ -1,5 +1,6 @@
 package com.example.samsisekki.nmap;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.nhn.android.maps.NMapActivity;
@@ -11,6 +12,8 @@ import com.nhn.android.maps.maplib.NGeoPoint;
 import com.nhn.android.maps.overlay.NMapPOIdata;
 import com.nhn.android.mapviewer.overlay.NMapOverlayManager;
 import com.nhn.android.mapviewer.overlay.NMapPOIdataOverlay;
+
+import java.util.ArrayList;
 
 public class nmap extends NMapActivity {
 
@@ -25,6 +28,10 @@ public class nmap extends NMapActivity {
     NMapOverlayManager mOverlayManager;
     //POI 아이템 선택 상태 변경 시 호출퇴는 콜백 인터페이스
     NMapPOIdataOverlay.OnStateChangeListener onPOIdataStateChangeListener = null;
+
+    ArrayList<String> locationx;
+    ArrayList<String> locationy;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,8 +52,11 @@ public class nmap extends NMapActivity {
 
         mMapView.setBuiltInZoomControls(true, null); // 줌 인/아웃 버튼 생성
 
+        Intent intent = getIntent();
+        locationx = intent.getStringArrayListExtra("locationx");
+        locationy = intent.getStringArrayListExtra("locationy");
         //지도 중심좌표 및 축적 레벨 설정
-        mMapController.setMapCenter(new NGeoPoint(126.978371, 37.5666091), 11);
+        mMapController.setMapCenter(new NGeoPoint(Double.parseDouble(locationx.get(0)),Double.parseDouble(locationy.get(0))), 11);
 
         //맵뷰 모드 설정(일반지도, 위성지도)
         mMapController.setMapViewMode(NMapView.VIEW_MODE_VECTOR);//일반지도
@@ -58,7 +68,7 @@ public class nmap extends NMapActivity {
         // create resource provider
         mMapViewerResourceProvider = new NMapViewerResourceProvider(this);
 
-// create overlay manager
+        // create overlay manager
         mOverlayManager = new NMapOverlayManager(this, mMapView, mMapViewerResourceProvider);
 
 
@@ -72,7 +82,8 @@ public class nmap extends NMapActivity {
 // POI 아이템 관리 클래스 생성(전체 아이템 수, NMapResourceProvider 상속 클래스)
         NMapPOIdata poiData = new NMapPOIdata(2, mMapViewerResourceProvider);
         poiData.beginPOIdata(2); // POI 아이템 추가 시작
-        poiData.addPOIitem(new NGeoPoint(126.978371, 37.5666091), "공릉맛집!", markerId, 0);
+        for(int i=0; i<locationx.size(); i++)
+            poiData.addPOIitem(new NGeoPoint(Double.parseDouble(locationx.get(i)), Double.parseDouble(locationy.get(i))), "공릉맛집!", markerId, 0);
         poiData.endPOIdata(); // POI 아이템 추가 종료
 //POI data overlay 객체 생성(여러 개의 오버레이 아이템을 포함할 수 있는 오버레이 클래스)
         NMapPOIdataOverlay poiDataOverlay = mOverlayManager.createPOIdataOverlay(poiData, null);

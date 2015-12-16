@@ -9,6 +9,7 @@ import java.util.Arrays;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.samsisekki.db.dbinsert;
 import com.example.samsisekki.displayingbitmaps.provider.Images;
+import com.example.samsisekki.displayingbitmaps.ui.ImageDetailActivity;
 import com.example.samsisekki.displayingbitmaps.ui.RecyclingImageView;
 import com.example.samsisekki.displayingbitmaps.util.ImageCache;
 import com.example.samsisekki.displayingbitmaps.util.ImageFetcher;
@@ -80,9 +82,10 @@ public class CustomAdapter extends BaseAdapter {
         }
         // TextView에 현재 position의 문자열 추가
         TextView textView = (TextView) convertView.findViewById(R.id.text1);
-        String menu = m_List.get(position);
-        textView.setText(menu);
-        final int index = Arrays.asList(Images.menu).indexOf(menu);
+        String menuavgrate = m_List.get(position);
+        textView.setText(menuavgrate);
+        String[] menu = menuavgrate.split(" ");
+        final int index = Arrays.asList(Images.menu).indexOf(menu[0]);
 
         // 버튼을 터치 했을 때 이벤트 발생
         Button btn = (Button) convertView.findViewById(R.id.move);
@@ -126,6 +129,14 @@ public class CustomAdapter extends BaseAdapter {
         mImageFetcher.addImageCache(context, cacheParams);
         ImageView imageView = (ImageView) convertView.findViewById(R.id.imageView2);
         mImageFetcher.loadImage(URL.get(position), imageView);
+        imageView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ImageDetailActivity.class);
+                intent.putExtra("picture", URL.get(pos));
+                context.startActivity(intent);
+            }
+        });
 
 
 

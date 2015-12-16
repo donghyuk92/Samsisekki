@@ -33,13 +33,10 @@ public class Images {
      * https://plus.google.com/109538161516040592207/about
      * http://www.flickr.com/photos/romainguy
      */
-
-    public static ArrayList<String> menu2 = new ArrayList<String>();
-
     public final static String[] menu = new String[] {
             "jjige","jogbal","ramen","rice","kimchi","dongas",
             "chiken","q","e","r","t","y","U","i","O",
-            "djjjige", "bdjjige", "kimchijjige"
+            "djjjige", "bdjjige", "kimchijjige","w"
     };
 
     /**

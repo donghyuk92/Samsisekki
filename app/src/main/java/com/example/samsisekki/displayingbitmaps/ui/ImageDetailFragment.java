@@ -18,6 +18,7 @@ package com.example.samsisekki.displayingbitmaps.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -68,7 +69,7 @@ public class ImageDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mImageUrl = getArguments() != null ? getArguments().getString(IMAGE_DATA_EXTRA) : null;
     }
-/**
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -77,7 +78,7 @@ public class ImageDetailFragment extends Fragment {
         mImageView = (ImageView) v.findViewById(R.id.imageView);
         return v;
     }
-**/
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
