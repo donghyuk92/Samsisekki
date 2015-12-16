@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ import com.example.samsisekki.parsing.parsing;
 import com.example.user.menu4u.R;
 
 import com.example.samsisekki.db.dbinsert;
+
+import java.util.ArrayList;
 
 /**
  * Created by slave on 2015-11-17.
@@ -56,13 +59,24 @@ public class FoodList extends AppCompatActivity {
         Intent intent = getIntent();
         int position = intent.getIntExtra(ImageDetailActivity.EXTRA_IMAGE, 1);
 
-        Cursor result = db.getRelated(Images.menu[position]);
-        while(!result.isAfterLast()){
-            m_Adapter.add(result.getString(0));
-            m_Adapter.addurl(result.getString(1));
-            result.moveToNext();
+        ArrayList<String> menu = new ArrayList<String>();
+        for(int i=0; i<Images.menu.length; i++) {
+            if (Images.menu[i].contains(Images.menu[position])) {
+                m_Adapter.add(Images.menu[i]);
+                m_Adapter.addurl(Images.imageThumbUrls[i]);
+                menu.add(Images.menu[i]);
+            }
         }
-        result.close();
+
+        for(int i=0; i<menu.size(); i++) {
+            Cursor result = db.getRate(deviceID, menu.get(i));
+            if (!result.isAfterLast())
+                m_Adapter.addrating(result.getString(0));
+            else
+                m_Adapter.addrating("Null");
+            result.close();
+
+        }
 
         m_ListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -80,7 +94,7 @@ public class FoodList extends AppCompatActivity {
                 String item = (String) m_ListView.getSelectedItem();
                 Toast.makeText(getApplicationContext(), item + " selected", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getApplicationContext(), parsing.class);
-                intent.putExtra("name","치킨");
+                intent.putExtra("name", "치킨");
                 startActivity(intent);
             }
         });

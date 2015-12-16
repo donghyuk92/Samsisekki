@@ -120,7 +120,6 @@ public class MainActivity extends AppCompatActivity {
         for(String item : Images.menu)
             Images.menu2.add(item);
 
-        //syncSQLiteMySQLDB();
     }
 
     @Override
@@ -142,21 +141,7 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-    /**
     // When Options Menu is selected
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here.
-        int id = item.getItemId();
-        // When Sync action button is clicked
-        if (id == R.id.refresh) {
-            // Transfer data from remote MySQL DB to SQLite on Android and perform Sync
-            syncSQLiteMySQLDB();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-**/
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         if(dtToggle.onOptionsItemSelected(item)){
@@ -186,9 +171,6 @@ public class MainActivity extends AppCompatActivity {
         Log.d(this.getClass().getSimpleName(), "onPause()");
         super.onPause();
     }
-
-
-
 
     @Override
     public void onStop() {

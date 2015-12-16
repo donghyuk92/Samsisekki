@@ -1,19 +1,16 @@
 package com.example.samsisekki;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
@@ -35,9 +32,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class RecommendFragment extends Fragment {
@@ -56,13 +51,12 @@ public class RecommendFragment extends Fragment {
     }
 
     public RecommendFragment() {
+        syncSQLiteMySQLDB();
         // Required empty public constructor
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         syncSQLiteMySQLDB();
-
         // Initialize Progress Dialog properties
 
         View v = inflater.inflate(R.layout.recommend, container, false);
@@ -70,9 +64,8 @@ public class RecommendFragment extends Fragment {
         DeviceUuidFactory dev = new DeviceUuidFactory(getContext());
         deviceID = dev.getDeviceID();
 
-        Cursor result = db.getIDs();
-
         ArrayList<String> IDs = new ArrayList<String>();
+        Cursor result = db.getIDs();
         while(!result.isAfterLast()){
             IDs.add(result.getString(0));
             result.moveToNext();
@@ -87,8 +80,8 @@ public class RecommendFragment extends Fragment {
             Cursor result2 = db.getIDVector(deviceID);
             while(!result2.isAfterLast()){
                 //int k = Arrays.asList(Images.menu).indexOf(result2.getString(0));
-                int k = Images.menu2.indexOf(result2.getString(0));
-                vec[k] = Float.parseFloat(result2.getString(1));
+                //int k = Images.menu2.indexOf(result2.getString(0));
+ //               vec[k] = Float.parseFloat(result2.getString(1));
                 result2.moveToNext();
             }
             result2.close();
@@ -98,7 +91,7 @@ public class RecommendFragment extends Fragment {
         }
 
         int me = IDs.indexOf(deviceID);
-        index = VectorUtil.getRecommended(vectors, me);
+//        index = VectorUtil.getRecommended(vectors, me);
 
         ImageCache.ImageCacheParams cacheParams =
                 new ImageCache.ImageCacheParams(getActivity(), IMAGE_CACHE_DIR);
@@ -112,6 +105,7 @@ public class RecommendFragment extends Fragment {
         mImageFetcher.loadImage(Images.imageThumbUrls[index],imageView);
         Button button = (Button) v.findViewById(R.id.btnCancel);
         RatingBar ratingBar = (RatingBar) v.findViewById(R.id.ratingBar2);
+        ratingBar.setNumStars(3);
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,6 +139,7 @@ public class RecommendFragment extends Fragment {
             @Override
             public void onSuccess(String response) {
                 // Hide ProgressBar
+
                 // Update SQLite DB with response sent by getusers.php
                 updateSQLite(response);
             }

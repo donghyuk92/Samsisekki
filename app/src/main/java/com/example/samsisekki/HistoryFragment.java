@@ -63,6 +63,7 @@ public class HistoryFragment extends Fragment {
             while(!result.isAfterLast()){
                 m_Adapter.add(result.getString(0));
                 m_Adapter.addurl(result.getString(1));
+                m_Adapter.addrating(result.getString(2));
                 result.moveToNext();
             }
             result.close();

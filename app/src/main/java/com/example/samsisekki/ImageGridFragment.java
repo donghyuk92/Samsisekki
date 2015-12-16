@@ -180,23 +180,6 @@ public class ImageGridFragment extends Fragment implements AdapterView.OnItemCli
     //    }
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.main_menu, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.clear_cache:
-                mImageFetcher.clearCache();
-                Toast.makeText(getActivity(), R.string.clear_cache_complete_toast,
-                        Toast.LENGTH_SHORT).show();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     /**
      * The main adapter that backs the GridView. This is fairly standard except the number of
      * columns in the GridView is used to create a fake top row of empty views as we use a

@@ -47,7 +47,6 @@ public class RankingFragment extends Fragment {
 
         // 커스텀 어댑터 생성
         m_Adapter = new CustomAdapter(getActivity());
-        m_Adapter.rateunable();
 
         // Xml에서 추가한 ListView 연결
         m_ListView = (ListView) rootView.findViewById(R.id.ranklist);

@@ -85,7 +85,7 @@ public class DBController  extends SQLiteOpenHelper {
     }
 
     public Cursor getHist(String deviceID){
-        String sql = "select menu,url from test where deviceID='" + deviceID + "' order by inserttime asc;";
+        String sql = "select menu,url,rating from test where deviceID='" + deviceID + "' order by inserttime asc;";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor result = database.rawQuery(sql, null);
         result.moveToFirst();
@@ -140,5 +140,13 @@ public class DBController  extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL(query);
         db.close();
+    }
+
+    public Cursor getRate(String deviceID, String menu) {
+        String sql = "select rating from test where deviceID='" + deviceID + "' and menu='"+ menu +"';";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor result = database.rawQuery(sql, null);
+        result.moveToFirst();
+        return result;
     }
 }
