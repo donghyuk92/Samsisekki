@@ -38,7 +38,9 @@ public class Images {
             "chiken","q","e","r","t","y","U","i","O",
             "djjjige", "bdjjige", "kimchijjige","w"
     };
-
+    public final static String[] menu2 = new String[] {
+            "찌개", "족발", "라면", "밥", "김치", "돈까스"
+    };
     /**
      * This are PicasaWeb thumbnail URLs and could potentially change. Ideally the PicasaWeb API
      * should be used to fetch the URLs.

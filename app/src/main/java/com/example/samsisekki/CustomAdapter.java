@@ -29,6 +29,7 @@ import com.example.samsisekki.displayingbitmaps.ui.RecyclingImageView;
 import com.example.samsisekki.displayingbitmaps.util.ImageCache;
 import com.example.samsisekki.displayingbitmaps.util.ImageFetcher;
 import com.example.samsisekki.parsing.parsing;
+import com.example.samsisekki.parsing.parsingtest;
 import com.example.user.menu4u.R;
 
 public class CustomAdapter extends BaseAdapter {
@@ -94,10 +95,9 @@ public class CustomAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 // 터치 시 해당 아이템 이름 출력
-                Toast.makeText(context, m_List.get(pos), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(context, parsing.class);
+                Intent intent = new Intent("parsingtest");//context, parsingtest.class
                 intent.putExtra("menu", m_List.get(pos));
-                context.startActivity(intent);
+                context.startService(intent);
             }
         });
         /**

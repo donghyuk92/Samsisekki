@@ -2,6 +2,7 @@ package com.example.samsisekki.nmap;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.nhn.android.maps.NMapActivity;
 import com.nhn.android.maps.NMapController;
@@ -29,8 +30,11 @@ public class nmap extends NMapActivity {
     //POI 아이템 선택 상태 변경 시 호출퇴는 콜백 인터페이스
     NMapPOIdataOverlay.OnStateChangeListener onPOIdataStateChangeListener = null;
 
-    ArrayList<String> locationx;
-    ArrayList<String> locationy;
+    ArrayList<String> KATEClocationx;
+    ArrayList<String> KATEClocationy;
+    ArrayList<Double> locationx;
+    ArrayList<Double> locationy;
+    ArrayList<String> title;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,18 +56,31 @@ public class nmap extends NMapActivity {
 
         mMapView.setBuiltInZoomControls(true, null); // 줌 인/아웃 버튼 생성
 
-        Intent intent = getIntent();
-        locationx = intent.getStringArrayListExtra("locationx");
-        locationy = intent.getStringArrayListExtra("locationy");
-        //지도 중심좌표 및 축적 레벨 설정
-        mMapController.setMapCenter(new NGeoPoint(Double.parseDouble(locationx.get(0)),Double.parseDouble(locationy.get(0))), 11);
-
         //맵뷰 모드 설정(일반지도, 위성지도)
         mMapController.setMapViewMode(NMapView.VIEW_MODE_VECTOR);//일반지도
 
         //mMapController.setMapViewMode(NMapView.VIEW_MODE_HYBRID);//위성지도
 
         setContentView(mMapView); //화면에 지도 표시
+
+
+        Intent intent = getIntent();
+        KATEClocationx = intent.getStringArrayListExtra("locationx");
+        KATEClocationy = intent.getStringArrayListExtra("locationy");
+        locationx = new ArrayList<Double>();
+        locationy = new ArrayList<Double>();
+        title = intent.getStringArrayListExtra("title");
+
+        //stopparsingservice
+        Intent stop = new Intent("parsingtest");
+        stopService(stop);
+
+        for(int i=0; i<KATEClocationx.size(); i++) {
+            GeoTransPoint oKA = new GeoTransPoint(Double.parseDouble(KATEClocationx.get(i)),Double.parseDouble(KATEClocationy.get(i)));
+            GeoTransPoint oGeo = GeoTrans.convert(GeoTrans.KATEC, GeoTrans.GEO, oKA);
+            locationx.add(oGeo.getX());
+            locationy.add(oGeo.getY());
+        }
 
         // create resource provider
         mMapViewerResourceProvider = new NMapViewerResourceProvider(this);
@@ -75,15 +92,27 @@ public class nmap extends NMapActivity {
         mMapViewerResourceProvider = new NMapViewerResourceProvider(this);
         mOverlayManager = new NMapOverlayManager(this, mMapView, mMapViewerResourceProvider);
         testOverlayMaker();
+        try {
+            NGeoPoint loc = new NGeoPoint(locationx.get(0), locationy.get(0));  // 맵뷰에서 사용가능한 좌표계
 
+            //지도 중심좌표 및 축적 레벨 설정
+            mMapController.setMapCenter(loc, 11);
+        } catch (IndexOutOfBoundsException e) {
+            mMapController.setMapCenter(new NGeoPoint(126.978371, 37.5666091), 11);
+            Log.d("TAG", KATEClocationx.size() + " " + title.size());
+        }
     }
     private void testOverlayMaker() { //오버레이 아이템 추가 함수
         int markerId = NMapPOIflagType.PIN; //마커 id설정
 // POI 아이템 관리 클래스 생성(전체 아이템 수, NMapResourceProvider 상속 클래스)
         NMapPOIdata poiData = new NMapPOIdata(2, mMapViewerResourceProvider);
         poiData.beginPOIdata(2); // POI 아이템 추가 시작
-        for(int i=0; i<locationx.size(); i++)
-            poiData.addPOIitem(new NGeoPoint(Double.parseDouble(locationx.get(i)), Double.parseDouble(locationy.get(i))), "공릉맛집!", markerId, 0);
+        try {
+            for (int i = 0; i < locationx.size(); i++)
+                poiData.addPOIitem(new NGeoPoint(locationx.get(i), locationy.get(i)), title.get(i + 1), markerId, 0);
+        } catch (IndexOutOfBoundsException e) {
+            Log.d("TAG", "" + locationx.size());
+        }
         poiData.endPOIdata(); // POI 아이템 추가 종료
 //POI data overlay 객체 생성(여러 개의 오버레이 아이템을 포함할 수 있는 오버레이 클래스)
         NMapPOIdataOverlay poiDataOverlay = mOverlayManager.createPOIdataOverlay(poiData, null);

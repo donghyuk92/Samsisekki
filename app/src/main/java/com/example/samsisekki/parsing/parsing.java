@@ -32,6 +32,7 @@ public class parsing extends Activity {
 
         ArrayList<String> locationx = new ArrayList<String>();
         ArrayList<String> locationy = new ArrayList<String>();
+        ArrayList<String> title = new ArrayList<String>();
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,7 @@ public class parsing extends Activity {
         Intent i = new Intent(this, nmap.class);
         i.putStringArrayListExtra("locationx", locationx);
         i.putStringArrayListExtra("locationy", locationy);
+        i.putStringArrayListExtra("title", title);
         startActivity(i);
     }
 
@@ -81,7 +83,6 @@ public class parsing extends Activity {
                             //UI Thread(Main Thread)를 제외한 어떤 Thread도 화면을 변경할 수 없기때문에
                             //runOnUiThread()를 이용하여 UI Thread가 TextView 글씨 변경하도록 함
                             runOnUiThread(new Runnable() {
-
                                 @Override
                                 public void run() {
                                     // TODO Auto-generated method stub
@@ -109,7 +110,6 @@ public class parsing extends Activity {
             String queryUrl="http://openapi.naver.com/search"   //요청 URL
                     +"?key="+key                        //key 값
                     +"&target=local"                     //검색서비스 api명세
-                    +"&coord=latlng"
                     +"&query="+location                 //지역검색 요청값
                     +"&display=10"                      //검색 출력 건수  10~100
                     +"&start=1";                         //검색 시작 위치  1~1000
@@ -142,6 +142,10 @@ public class parsing extends Activity {
                                 xpp.next();
                                 buffer.append(xpp.getText()); //title 요소의 TEXT 읽어와서 문자열버퍼에 추가
                                 buffer.append("\n");          //줄바꿈 문자 추가
+                                String tmp = xpp.getText().replaceAll("<b>", "");
+                                tmp = tmp.replaceAll("</b>","");
+                                tmp = tmp.replaceAll("&amp;","&");
+                                title.add(tmp);
                             }
                             else if(tag.equals("category")){
                                 buffer.append("업종 : ");
