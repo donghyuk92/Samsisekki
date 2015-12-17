@@ -56,6 +56,8 @@ public class RecommendFragment extends Fragment {
     ProgressDialog prgDialog;
     ArrayList<Integer> ranNumber;
     int k;
+    int i;
+    int check;
 
     public static RecommendFragment newInstance() {
         RecommendFragment fragment = new RecommendFragment();
@@ -76,22 +78,20 @@ public class RecommendFragment extends Fragment {
         DeviceUuidFactory dev = new DeviceUuidFactory(getContext());
         deviceID = dev.getDeviceID();
 
-        SharedPreferences mPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        final SharedPreferences mPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         //데이터 호출
-        final int check = mPref.getInt("number", 0);
+        check = mPref.getInt("number", 0);
 
         //*호출하는 키에 대응하는 값이 없을 경우 디폴트로 설정한 데이터가 출력된다.
+        ranNumber = new ArrayList<Integer>();
+        for (int i = 0; i < Images.menu.length; i++) {
+            ranNumber.add(i);
+        }
+        Collections.shuffle(ranNumber);
+        index = ranNumber.get(0);
 
-        if (check != 11) {
-            //데이터 저장
-            ranNumber = new ArrayList<Integer>();
-            for (int i = 0; i < Images.menu.length; i++) {
-                ranNumber.add(i);
-            }
-            Collections.shuffle(ranNumber);
-            index = ranNumber.get(0);
-        } else if (check ==11) {
+        if (check ==11) {
             ArrayList<String> IDs = new ArrayList<String>();
             Cursor result = db.getIDs();
             while (!result.isAfterLast()) {
@@ -136,6 +136,14 @@ public class RecommendFragment extends Fragment {
         //mImageFetcher.setLoadingImage(R.drawable.);
         mImageFetcher.addImageCache(getActivity().getSupportFragmentManager(), cacheParams);
         final ImageView imageView = (ImageView) v.findViewById(R.id.imageView);
+        imageView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent("parsingtest");//context, parsingtest.class
+                intent.putExtra("menu", Images.menu2[index]);
+                getActivity().startService(intent);
+            }
+        });
         mImageFetcher.loadImage(Images.imageThumbUrls[index], imageView);
 
         final RatingBar ratingBar = (RatingBar) v.findViewById(R.id.ratingBar2);
@@ -144,38 +152,61 @@ public class RecommendFragment extends Fragment {
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                if (fromUser) {
+                if (fromUser && check == 11) {
                     dbinsert db = new dbinsert(getContext());
                     db.dbinsert(deviceID, "Han", Images.menu[index], rating, Images.imageThumbUrls[index]);
                 }
             }
         });
 
+        i = 0;
         k = 0;
-        Button button = (Button) v.findViewById(R.id.btnCancel);
+        final Button button = (Button) v.findViewById(R.id.btnCancel);
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                k++;
-                index = ranNumber.get(k);
-                /**
                 int ch = check;
+                Log.d("TAG", ch + "" + check);
                 switch (ch) {
-                    case 10:
-                        Toast.makeText(getActivity(), "취향 정보를 분석합니다!", Toast.LENGTH_SHORT);
-                        getActivity().finish();
-                        startActivity(new Intent(getActivity(), MainActivity.class));
                     case 11:
-                        index = indexlist.get(k);
+                        try {
+                            index = indexlist.get(i);
+                        } catch (IndexOutOfBoundsException e) {
+                            k++;
+                            index = ranNumber.get(k);
+                        }
+                        i++;
+                        break;
+                    case 10:
+                        if (ratingBar.getRating() == 0f) {
+                            index = ranNumber.get(k);
+                            k++;
+                            dbinsert db = new dbinsert(getContext());
+                            db.dbinsert(deviceID, "Han", Images.menu[index], ratingBar.getRating(), Images.imageThumbUrls[index]);
+                            Toast.makeText(getActivity(), "취향 정보를 분석합니다!", Toast.LENGTH_SHORT);
+                            SharedPreferences.Editor editor = mPref.edit();;
+                            ch++;
+                            editor.putInt("number", ch);
+                            editor.commit();
+                            getActivity().finish();
+                            startActivity(new Intent(getActivity(), MainActivity.class));
+                        } else
+                            Toast.makeText(getActivity(), "취향 반영이 안됬습니다.\n 별점을 메겨 주세요~", Toast.LENGTH_SHORT).show();
                         break;
                     default:
-                        index = ranNumber.get(k);
+                        if (ratingBar.getRating() == 0f) {
+                            index = ranNumber.get(k);
+                            k++;
+                            dbinsert db = new dbinsert(getContext());
+                            db.dbinsert(deviceID, "Han", Images.menu[index], ratingBar.getRating(), Images.imageThumbUrls[index]);
+                        } else
+                            Toast.makeText(getActivity(), "취향 반영이 안됬습니다.\n 별점을 메겨 주세요~", Toast.LENGTH_SHORT).show();
+                        break;
                 }
-                 **/
                 mImageFetcher.loadImage(Images.imageThumbUrls[index], imageView);
                 textView2.setText(Images.menu2[index]);
                 ratingBar.setRating(0f);
-
+                Log.d("TAG", ch + "" + check);
             }
         });
         return v;

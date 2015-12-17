@@ -62,6 +62,7 @@ public class dbinsert extends AppCompatActivity {
             } else if (check==10) {
                 check++;
             }
+            Log.d("TAG", " " + check);
             return "1";
         }
 
