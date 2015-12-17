@@ -22,7 +22,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:background="#fffff9"
-        android:layout_below="@+id/imageView2" />
+        android:layout_below="@+id/textView2" />
 
     <Button
         android:id="@+id/btnCancel"
@@ -35,16 +35,26 @@
         android:layout_gravity="right"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@+id/ratingBar2"
+        android:layout_toEndOf="@+id/ratingBar2" />
 
     <RatingBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/ratingBar2"
-        android:layout_alignTop="@+id/btnCancel"
+        android:stepSize="0.5"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/btnCancel"
-        android:layout_toStartOf="@+id/btnCancel" />
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/textView2"
+        android:layout_below="@+id/imageView2"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

@@ -217,13 +217,13 @@ public class ImageGridFragment extends Fragment implements AdapterView.OnItemCli
             }
 
             // Size + number of columns for top empty row
-            return Images.imageThumbUrls.length + mNumColumns;
+            return Images.classimage.length + mNumColumns;
         }
 
         @Override
         public Object getItem(int position) {
             return position < mNumColumns ?
-                    null : Images.imageThumbUrls[position - mNumColumns];
+                    null : Images.classimage[position - mNumColumns];
         }
 
         @Override
@@ -278,7 +278,7 @@ public class ImageGridFragment extends Fragment implements AdapterView.OnItemCli
 
             // Finally load the image asynchronously into the ImageView, this also takes care of
             // settingFragment a placeholder image while the background thread runs
-            mImageFetcher.loadImage(Images.imageThumbUrls[position - mNumColumns], imageView);
+            mImageFetcher.loadImage(Images.classimage[position - mNumColumns], imageView);
             return imageView;
             //END_INCLUDE(load_gridview_item)
         }

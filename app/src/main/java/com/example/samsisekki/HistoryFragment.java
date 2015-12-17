@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.samsisekki.dbtest.DBController;
+import com.example.samsisekki.displayingbitmaps.provider.Images;
 import com.example.user.menu4u.R;
 
 /**
@@ -61,7 +62,15 @@ public class HistoryFragment extends Fragment {
             //getHist();
             Cursor result = db.getHist(deviceID);
             while(!result.isAfterLast()){
-                m_Adapter.add(result.getString(0));
+                String tmp = result.getString(0);
+                int index;
+                for(int i=0;i< Images.menu.length;i++) {
+                    if (Images.menu[i].equals(tmp)) {
+                        index = i;
+                        m_Adapter.add(Images.menu2[i]);
+                        break;
+                    }
+                }
                 m_Adapter.addurl(result.getString(1));
                 m_Adapter.addrating(result.getString(2));
                 result.moveToNext();

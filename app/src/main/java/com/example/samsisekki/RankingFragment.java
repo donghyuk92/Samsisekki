@@ -63,7 +63,15 @@ public class RankingFragment extends Fragment {
         //getRank();
         Cursor result = db.getRank();
         while(!result.isAfterLast()){
-            m_Adapter.add(result.getString(0) + " 평점 : " + result.getString(1));
+            String tmp = result.getString(0);
+            int index;
+            for(int i=0;i<Images.menu.length;i++) {
+                if (Images.menu[i].equals(tmp)) {
+                    index = i;
+                    m_Adapter.add(Images.menu2[i] + " 평점 : " + result.getString(1));
+                    break;
+                }
+            }
             m_Adapter.addurl(result.getString(2));
             menu.add(result.getString(0));
             result.moveToNext();

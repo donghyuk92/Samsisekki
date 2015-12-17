@@ -1,9 +1,13 @@
 package com.example.samsisekki;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,11 +17,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.samsisekki.algorithm.entity.Vector;
 import com.example.samsisekki.algorithm.util.VectorUtil;
-import com.example.samsisekki.db.dbinsert;
+import com.example.samsisekki.dbtest.dbinsert;
 import com.example.samsisekki.dbtest.DBController;
 import com.example.samsisekki.displayingbitmaps.provider.Images;
 import com.example.samsisekki.displayingbitmaps.util.ImageCache;
@@ -35,6 +40,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class RecommendFragment extends Fragment {
@@ -42,12 +48,16 @@ public class RecommendFragment extends Fragment {
     SQLiteDatabase database;
     String deviceID;
     DBController db;
-    int index;
     ImageFetcher mImageFetcher;
     private static final String IMAGE_CACHE_DIR = "thumbs";
     HashMap<String, String> queryValues;
+    ArrayList<Integer> indexlist;
+    int index;
+    ProgressDialog prgDialog;
+    ArrayList<Integer> ranNumber;
+    int k;
 
-    public static RecommendFragment newInstance(){
+    public static RecommendFragment newInstance() {
         RecommendFragment fragment = new RecommendFragment();
         return fragment;
     }
@@ -56,80 +66,127 @@ public class RecommendFragment extends Fragment {
         syncSQLiteMySQLDB();
         // Required empty public constructor
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         syncSQLiteMySQLDB();
         // Initialize Progress Dialog properties
-
         View v = inflater.inflate(R.layout.recommend, container, false);
 
         DeviceUuidFactory dev = new DeviceUuidFactory(getContext());
         deviceID = dev.getDeviceID();
 
-        ArrayList<String> IDs = new ArrayList<String>();
-        Cursor result = db.getIDs();
-        while(!result.isAfterLast()){
-            IDs.add(result.getString(0));
-            result.moveToNext();
-        }
-        result.close();
+        SharedPreferences mPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        ArrayList<Vector> vectors = new ArrayList<Vector>();
+        //데이터 호출
+        final int check = mPref.getInt("number", 0);
 
-        int size = Images.menu.length;
-        for(int j=0; j<IDs.size(); j++) {
-            float[] vec = new float[size];
-            String deviceID = IDs.get(j);
-            Cursor result2 = db.getIDVector(deviceID);
-            while(!result2.isAfterLast()){
-                int k = Arrays.asList(Images.menu).indexOf(result2.getString(0));
-                vec[k] = Float.parseFloat(result2.getString(1));
-                result2.moveToNext();
+        //*호출하는 키에 대응하는 값이 없을 경우 디폴트로 설정한 데이터가 출력된다.
+
+        if (check != 11) {
+            //데이터 저장
+            ranNumber = new ArrayList<Integer>();
+            for (int i = 0; i < Images.menu.length; i++) {
+                ranNumber.add(i);
             }
-            result2.close();
+            Collections.shuffle(ranNumber);
+            index = ranNumber.get(0);
+        } else if (check ==11) {
+            ArrayList<String> IDs = new ArrayList<String>();
+            Cursor result = db.getIDs();
+            while (!result.isAfterLast()) {
+                IDs.add(result.getString(0));
+                result.moveToNext();
+            }
+            result.close();
 
-            Vector vc = new Vector(vec);
-            vectors.add(vc);
+            ArrayList<Vector> vectors = new ArrayList<Vector>();
+
+            int size = Images.menu.length;
+            for (int j = 0; j < IDs.size(); j++) {
+                float[] vec = new float[size];
+                String deviceID = IDs.get(j);
+                Cursor result2 = db.getIDVector(deviceID);
+                while (!result2.isAfterLast()) {
+                    int k = Arrays.asList(Images.menu).indexOf(result2.getString(0));
+                    vec[k] = Float.parseFloat(result2.getString(1));
+                    result2.moveToNext();
+                }
+                result2.close();
+
+                Vector vc = new Vector(vec);
+                vectors.add(vc);
+            }
+
+            int me = IDs.indexOf(deviceID);
+            java.util.Vector raw = VectorUtil.getRecommended(vectors, me);
+
+            indexlist = (ArrayList<Integer>) raw.get(0);
+            index = (int) raw.get(1);
         }
 
-        int me = IDs.indexOf(deviceID);
-        index = VectorUtil.getRecommended(vectors, me);
+        final TextView textView2 = (TextView) v.findViewById(R.id.textView2);
+        textView2.setText(Images.menu2[index]);
 
         ImageCache.ImageCacheParams cacheParams =
                 new ImageCache.ImageCacheParams(getActivity(), IMAGE_CACHE_DIR);
         cacheParams.setMemCacheSizePercent(0.25f); // Set memory cache to 25% of app memory
         int mImageThumbSize = getResources().getDimensionPixelSize(R.dimen.image_thumbnail_size);
         mImageFetcher = new ImageFetcher(getActivity(), mImageThumbSize);
-        //mImageFetcher.setLoadingImage(R.drawable.empty_photo);
+        //mImageFetcher.setLoadingImage(R.drawable.);
         mImageFetcher.addImageCache(getActivity().getSupportFragmentManager(), cacheParams);
-
         final ImageView imageView = (ImageView) v.findViewById(R.id.imageView);
-        mImageFetcher.loadImage(Images.imageThumbUrls[index],imageView);
-        Button button = (Button) v.findViewById(R.id.btnCancel);
-        RatingBar ratingBar = (RatingBar) v.findViewById(R.id.ratingBar2);
-        ratingBar.setNumStars(3);
-        button.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                index += 1;
-                mImageFetcher.loadImage(Images.imageThumbUrls[index], imageView);
+        mImageFetcher.loadImage(Images.imageThumbUrls[index], imageView);
 
-            }
-        });
+        final RatingBar ratingBar = (RatingBar) v.findViewById(R.id.ratingBar2);
+        ratingBar.setStepSize((float) 0.5);        //별 색깔이 1칸씩줄어들고 늘어남 0.5로하면 반칸씩 들어감
+        ratingBar.setNumStars(5);
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                dbinsert db = new dbinsert();
-                db.dbinsert(deviceID,"asd", Images.menu[index] ,rating, Images.imageThumbUrls[index]);
+                if (fromUser) {
+                    dbinsert db = new dbinsert(getContext());
+                    db.dbinsert(deviceID, "Han", Images.menu[index], rating, Images.imageThumbUrls[index]);
+                }
+            }
+        });
+
+        k = 0;
+        Button button = (Button) v.findViewById(R.id.btnCancel);
+        button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                k++;
+                index = ranNumber.get(k);
+                /**
+                int ch = check;
+                switch (ch) {
+                    case 10:
+                        Toast.makeText(getActivity(), "취향 정보를 분석합니다!", Toast.LENGTH_SHORT);
+                        getActivity().finish();
+                        startActivity(new Intent(getActivity(), MainActivity.class));
+                    case 11:
+                        index = indexlist.get(k);
+                        break;
+                    default:
+                        index = ranNumber.get(k);
+                }
+                 **/
+                mImageFetcher.loadImage(Images.imageThumbUrls[index], imageView);
+                textView2.setText(Images.menu2[index]);
+                ratingBar.setRating(0f);
+
             }
         });
         return v;
     }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         db = new DBController(activity);
     }
+
     public void syncSQLiteMySQLDB() {
         // Create AsycHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
@@ -162,14 +219,14 @@ public class RecommendFragment extends Fragment {
         });
     }
 
-    public void updateSQLite(String response){
+    public void updateSQLite(String response) {
         // Create GSON object
         Gson gson = new GsonBuilder().create();
         try {
             // Extract JSON array from the response
             JSONArray arr = new JSONArray(response);
             // If no of array elements is not zero
-            if(arr.length() != 0){
+            if (arr.length() != 0) {
                 // Loop through each array element, get JSON object which has userid and username
                 for (int i = 0; i < arr.length(); i++) {
                     // Get JSON object

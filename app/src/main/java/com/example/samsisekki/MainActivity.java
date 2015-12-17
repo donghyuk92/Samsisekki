@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Initialize Progress Dialog properties
         prgDialog = new ProgressDialog(this);
-        prgDialog.setMessage("Transferring Data from Remote MySQL DB and Syncing SQLite. Please wait...");
+        prgDialog.setMessage("데이터베이스를 업데이트 중 입니다~ \n 잠시만 기다려주세요!");
         prgDialog.setCancelable(false);
 
         // Fragments

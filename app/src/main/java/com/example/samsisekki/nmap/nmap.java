@@ -35,6 +35,8 @@ public class nmap extends NMapActivity {
     ArrayList<Double> locationx;
     ArrayList<Double> locationy;
     ArrayList<String> title;
+    ArrayList<String> tel;
+    ArrayList<String> addr;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,6 +72,8 @@ public class nmap extends NMapActivity {
         locationx = new ArrayList<Double>();
         locationy = new ArrayList<Double>();
         title = intent.getStringArrayListExtra("title");
+        tel = intent.getStringArrayListExtra("tel");
+        addr = intent.getStringArrayListExtra("addr");
 
         //stopparsingservice
         Intent stop = new Intent("parsingtest");
@@ -87,7 +91,6 @@ public class nmap extends NMapActivity {
 
         // create overlay manager
         mOverlayManager = new NMapOverlayManager(this, mMapView, mMapViewerResourceProvider);
-
 
         mMapViewerResourceProvider = new NMapViewerResourceProvider(this);
         mOverlayManager = new NMapOverlayManager(this, mMapView, mMapViewerResourceProvider);
@@ -109,7 +112,7 @@ public class nmap extends NMapActivity {
         poiData.beginPOIdata(2); // POI 아이템 추가 시작
         try {
             for (int i = 0; i < locationx.size(); i++)
-                poiData.addPOIitem(new NGeoPoint(locationx.get(i), locationy.get(i)), title.get(i + 1), markerId, 0);
+                poiData.addPOIitem(new NGeoPoint(locationx.get(i), locationy.get(i)), title.get(i + 1) + " \n " + tel.get(i) + "\n" + addr.get(i), markerId, 0);
         } catch (IndexOutOfBoundsException e) {
             Log.d("TAG", "" + locationx.size());
         }

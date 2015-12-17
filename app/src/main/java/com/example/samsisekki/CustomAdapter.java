@@ -22,7 +22,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.samsisekki.db.dbinsert;
+import com.example.samsisekki.dbtest.dbinsert;
 import com.example.samsisekki.displayingbitmaps.provider.Images;
 import com.example.samsisekki.displayingbitmaps.ui.ImageDetailActivity;
 import com.example.samsisekki.displayingbitmaps.ui.RecyclingImageView;
@@ -86,7 +86,7 @@ public class CustomAdapter extends BaseAdapter {
         String menuavgrate = m_List.get(position);
         textView.setText(menuavgrate);
         String[] menu = menuavgrate.split(" ");
-        final int index = Arrays.asList(Images.menu).indexOf(menu[0]);
+        final int index = Arrays.asList(Images.menu2).indexOf(menu[0]);
 
         // 버튼을 터치 했을 때 이벤트 발생
         Button btn = (Button) convertView.findViewById(R.id.move);
@@ -138,8 +138,6 @@ public class CustomAdapter extends BaseAdapter {
             }
         });
 
-
-
         ratingBar = (RatingBar) convertView.findViewById(R.id.ratingBar);
         ratingBar.setStepSize((float) 0.5);        //별 색깔이 1칸씩줄어들고 늘어남 0.5로하면 반칸씩 들어감
         ratingBar.setNumStars(5);
@@ -157,7 +155,7 @@ public class CustomAdapter extends BaseAdapter {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 if(fromUser) {
-                    dbinsert db = new dbinsert();
+                    dbinsert db = new dbinsert(context);
                     db.dbinsert(deviceID, "Han", Images.menu[index], rating, Images.imageThumbUrls[index]);
                 }
             }

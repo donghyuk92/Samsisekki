@@ -36,6 +36,9 @@ public class parsingtest extends Service {
     ArrayList<String> locationx = new ArrayList<String>();
     ArrayList<String> locationy = new ArrayList<String>();
     ArrayList<String> title = new ArrayList<String>();
+    ArrayList<String> tel = new ArrayList<String>();
+    ArrayList<String> addr = new ArrayList<String>();
+
     Intent i;
 
     @Override
@@ -78,6 +81,9 @@ public class parsingtest extends Service {
                 i.putStringArrayListExtra("locationx", locationx);
                 i.putStringArrayListExtra("locationy", locationy);
                 i.putStringArrayListExtra("title", title);
+                i.putStringArrayListExtra("tel", tel);
+                i.putStringArrayListExtra("addr", addr);
+
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
 
@@ -123,50 +129,30 @@ public class parsingtest extends Service {
 
                         if (tag.equals("item")) ;// 첫번째 검색결과
                         else if (tag.equals("title")) {
-                            buffer.append("업소명 : ");
+                            //buffer.append("업소명 : ");
                             xpp.next();
-                            buffer.append(xpp.getText()); //title 요소의 TEXT 읽어와서 문자열버퍼에 추가
-                            buffer.append("\n");          //줄바꿈 문자 추가
                             String tmp = xpp.getText().replaceAll("<b>", "");
                             tmp = tmp.replaceAll("</b>", "");
                             tmp = tmp.replaceAll("&amp;", "&");
                             title.add(tmp);
-                        } else if (tag.equals("category")) {
-                            buffer.append("업종 : ");
-                            xpp.next();
-                            buffer.append(xpp.getText()); //category 요소의 TEXT 읽어와서 문자열버퍼에 추가
-                            buffer.append("\n");          //줄바꿈 문자 추가
-                        } else if (tag.equals("description")) {
-                            buffer.append("세부설명 :");
-                            xpp.next();
-                            buffer.append(xpp.getText()); //description 요소의 TEXT 읽어와서 문자열버퍼에 추가
-                            buffer.append("\n");          //줄바꿈 문자 추가
                         } else if (tag.equals("telephone")) {
-                            buffer.append("연락처 :");
+                            //buffer.append("연락처 :");
                             xpp.next();
-                            buffer.append(xpp.getText()); //telephone 요소의 TEXT 읽어와서 문자열버퍼에 추가
-                            buffer.append("\n");          //줄바꿈 문자 추가
+                            tel.add(xpp.getText());
                         } else if (tag.equals("address")) {
-                            buffer.append("주소 :");
+                            //buffer.append("주소 :");
                             xpp.next();
-                            buffer.append(xpp.getText()); //address 요소의 TEXT 읽어와서 문자열버퍼에 추가
-                            buffer.append("\n");          //줄바꿈 문자 추가
+                            addr.add(xpp.getText());
                         } else if (tag.equals("mapx")) {
-                            buffer.append("지도 위치 X :");
+                            //buffer.append("지도 위치 X :");
                             xpp.next();
-                            buffer.append(xpp.getText()); //mapx 요소의 TEXT 읽어와서 문자열버퍼에 추가
-                            buffer.append("  ,  ");          //줄바꿈 문자 추가
                             locationx.add(xpp.getText());
                         } else if (tag.equals("mapy")) {
-                            buffer.append("지도 위치 Y :");
+                            //buffer.append("지도 위치 Y :");
                             xpp.next();
-                            buffer.append(xpp.getText()); //mapy 요소의 TEXT 읽어와서 문자열버퍼에 추가
-                            buffer.append("\n");          //줄바꿈 문자 추가
                             locationy.add(xpp.getText());
-                            Log.d("TAG", xpp.getText());
                         }
                         break;
-
                     case XmlPullParser.TEXT:
                         break;
 
@@ -185,8 +171,7 @@ public class parsingtest extends Service {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        buffer.append("end NAVER XML parsing...\n");
+        //buffer.append("end NAVER XML parsing...\n");
         //return buffer.toString(); //StringBuffer 문자열 객체 반환
-        Log.d("TAG", buffer.toString());
     }//getXmlData method....
 }
