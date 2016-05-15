@@ -1,0 +1,44 @@
+<resources>
+    <string name="app_name">옛다! Menu</string>
+
+    <string name="title_section1">Home</string>
+    <string name="title_section2">History</string>
+    <string name="title_section3">Ranking</string>
+    <string name="title_section4">Setting</string>
+
+
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Example action</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="str_done">Done</string>
+    <string name="clear_cache_complete_toast">clear_cache_complete</string>
+    <string name="clear_cache_menu">clear_cache</string>
+    <string name="no_network_connection_toast">no_network</string>
+
+
+    <string name="hello_world">Hello world!</string>
+    <string name="title1">How to?</string>
+    <string name="title2">History</string>
+    <string name="title3">Alarm Setting</string>
+    <string name="reset">repeat</string>
+    <string name="Monday">Mo</string>
+    <string name="Tuesday">Tu</string>
+    <string name="Wednesday">We</string>
+    <string name="Thursday">Th</string>
+    <string name="Friday">Fr</string>
+    <string name="Saturday">Sa</string>
+    <string name="Sunday">Su</string>
+    <string name="Save">Save</string>
+    <string name="Cancel">Cancel</string>
+    <string name="Record">Record </string>
+    <string name="Stop">Stop</string>
+    <string name="alarming">밥먹자!</string>
+    <string name="calorie">calc calorie</string>
+    <string name="calorieinfo">calorie info</string>
+    <string name="title_section0">추천</string>
+
+</resources>

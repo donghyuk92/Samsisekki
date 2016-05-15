@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="Day">#FF4081</color>
+
+    <color name="grid_state_pressed">#BB7dbcd3</color>
+    <color name="grid_state_focused">#777dbcd3</color>
+
+    <color name="popup_Title">#0089bc</color>
+    <color name="popup_devideMainLine">#33b5e5</color>
+    <color name="popup_text">#7e7e7e</color>
+    <color name="popup_devideLine">#d8d8d8</color>
+    <color name="popup_close">#4f85da</color>
+</resources>

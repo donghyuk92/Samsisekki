@@ -33,6 +33,8 @@ public class Images {
      * https://plus.google.com/109538161516040592207/about
      * http://www.flickr.com/photos/romainguy
      */
+    public final static String IP = "203.246.82.97:48780";
+
     public final static String[] menu = new String[] {
             "chicken","yangnyumchicken","pachicken","snowchicken","ganjangchicken","crispychicken",
             "roastchiken","onionchicken",
@@ -56,47 +58,47 @@ public class Images {
             "zzigea","tuigim","resoto","gratang","burger"
     };
     public final static String[] classimage = new String[]{
-            "http://117.17.188.146/donghyuk/img/2.jpg",
-            "http://117.17.188.146/donghyuk/img/jookbal.jpg",
-            "http://117.17.188.146/donghyuk/img/9.jpg",
-            "http://117.17.188.146/donghyuk/img/6.jpg",
-            "http://117.17.188.146/donghyuk/img/12.jpg",
-            "http://117.17.188.146/donghyuk/img/7.jpg",
-            "http://117.17.188.146/donghyuk/img/1.jpg",
-            "http://117.17.188.146/donghyuk/img/tuigim.jpg",
-            "http://117.17.188.146/donghyuk/img/mushroomresoto.jpg",
-            "http://117.17.188.146/donghyuk/img/gratang.jpg",
-            "http://117.17.188.146/donghyuk/img/burger.jpg"
+            "http://203.246.82.97:48780/img/2.jpg",
+            "http://203.246.82.97:48780/img/jookbal.jpg",
+            "http://203.246.82.97:48780/img/9.jpg",
+            "http://203.246.82.97:48780/img/6.jpg",
+            "http://203.246.82.97:48780/img/12.jpg",
+            "http://203.246.82.97:48780/img/7.jpg",
+            "http://203.246.82.97:48780/img/1.jpg",
+            "http://203.246.82.97:48780/img/tuigim.jpg",
+            "http://203.246.82.97:48780/img/mushroomresoto.jpg",
+            "http://203.246.82.97:48780/img/gratang.jpg",
+            "http://203.246.82.97:48780/img/burger.jpg"
     };
     public final static String[] imageThumbUrls = new String[] {
-            "http://117.17.188.146/donghyuk/img/chicken.jpg",
-            "http://117.17.188.146/donghyuk/img/yangnyumchicken.jpg",
-            "http://117.17.188.146/donghyuk/img/pachicken.jpg",
-            "http://117.17.188.146/donghyuk/img/snowchicken.jpg",
-            "http://117.17.188.146/donghyuk/img/ganjangchicken.jpg",
-            "http://117.17.188.146/donghyuk/img/crispychicken.jpg",
-            "http://117.17.188.146/donghyuk/img/roastchicken.jpg",
-            "http://117.17.188.146/donghyuk/img/onionchicken.jpg",
-            "http://117.17.188.146/donghyuk/img/jookbal.jpg",
-            "http://117.17.188.146/donghyuk/img/buljookbal.jpg",
-            "http://117.17.188.146/donghyuk/img/nangchejookbal.jpg",
-            "http://117.17.188.146/donghyuk/img/bossam.jpg",
-            "http://117.17.188.146/donghyuk/img/kimchi.jpg",
-            "http://117.17.188.146/donghyuk/img/ugujizzigea.jpg",
-            "http://117.17.188.146/donghyuk/img/denjangzzigea.jpg",
-            "http://117.17.188.146/donghyuk/img/fishsoondubuzzigea.jpg",
-            "http://117.17.188.146/donghyuk/img/fishzzigea.jpg",
-            "http://117.17.188.146/donghyuk/img/gamjatang.jpg",
-            "http://117.17.188.146/donghyuk/img/chanchikimchizzigea.jpg",
-            "http://117.17.188.146/donghyuk/img/ahrtang.jpg",
-            "http://117.17.188.146/donghyuk/img/boodeazzigea.jpg",
-            "http://117.17.188.146/donghyuk/img/goolbab.jpg",
-            "http://117.17.188.146/donghyuk/img/mushroomresoto.jpg",
-            "http://117.17.188.146/donghyuk/img/namoolbibimbab.jpg",
-            "http://117.17.188.146/donghyuk/img/gamjaburger.jpg",
-            "http://117.17.188.146/donghyuk/img/fishgratang.jpg",
-            "http://117.17.188.146/donghyuk/img/golbengeidupbab.jpg",
-            "http://117.17.188.146/donghyuk/img/redwinestake.jpg",
-            "http://117.17.188.146/donghyuk/img/ramen.jpg"
+            "http://203.246.82.97:48780/img/chicken.jpg",
+            "http://203.246.82.97:48780/img/yangnyumchicken.jpg",
+            "http://203.246.82.97:48780/img/pachicken.jpg",
+            "http://203.246.82.97:48780/img/snowchicken.jpg",
+            "http://203.246.82.97:48780/img/ganjangchicken.jpg",
+            "http://203.246.82.97:48780/img/crispychicken.jpg",
+            "http://203.246.82.97:48780/img/roastchicken.jpg",
+            "http://203.246.82.97:48780/img/onionchicken.jpg",
+            "http://203.246.82.97:48780/img/jookbal.jpg",
+            "http://203.246.82.97:48780/img/buljookbal.jpg",
+            "http://203.246.82.97:48780/img/nangchejookbal.jpg",
+            "http://203.246.82.97:48780/img/bossam.jpg",
+            "http://203.246.82.97:48780/img/kimchi.jpg",
+            "http://203.246.82.97:48780/img/ugujizzigea.jpg",
+            "http://203.246.82.97:48780/img/denjangzzigea.jpg",
+            "http://203.246.82.97:48780/img/fishsoondubuzzigea.jpg",
+            "http://203.246.82.97:48780/img/fishzzigea.jpg",
+            "http://203.246.82.97:48780/img/gamjatang.jpg",
+            "http://203.246.82.97:48780/img/chanchikimchizzigea.jpg",
+            "http://203.246.82.97:48780/img/ahrtang.jpg",
+            "http://203.246.82.97:48780/img/boodeazzigea.jpg",
+            "http://203.246.82.97:48780/img/goolbab.jpg",
+            "http://203.246.82.97:48780/img/mushroomresoto.jpg",
+            "http://203.246.82.97:48780/img/namoolbibimbab.jpg",
+            "http://203.246.82.97:48780/img/gamjaburger.jpg",
+            "http://203.246.82.97:48780/img/fishgratang.jpg",
+            "http://203.246.82.97:48780/img/golbengeidupbab.jpg",
+            "http://203.246.82.97:48780/img/redwinestake.jpg",
+            "http://203.246.82.97:48780/img/ramen.jpg"
     };
 }

@@ -1,9 +1,7 @@
 package com.example.samsisekki;
 import android.app.ProgressDialog;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -55,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
     // Progress Dialog Object
     ProgressDialog prgDialog;
     HashMap<String, String> queryValues;
+
+    private String IP = Images.IP;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,12 +187,13 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+/*
     @Override
     public void onSaveInstanceState(Bundle outState) {
         Log.d(this.getClass().getSimpleName(), "onSaveInstanceState()");
         super.onSaveInstanceState(outState);
     }
-    public void syncSQLiteMySQLDB() {
+    public void syncSQLiteMySQLDB2() {
         // Create AsycHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
         // Http Request Params Object
@@ -200,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
         // Show ProgressBar
         prgDialog.show();
         // Make Http call to getusers.php
-        client.post("http://117.17.188.146/donghyuk/sync/script/getusers.php", params, new AsyncHttpResponseHandler() {
+        client.post("http://203.246.82.97:48780/sync/script/getreview.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(String response) {
                 // Hide ProgressBar
@@ -226,6 +227,42 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+*/
+    public void syncSQLiteMySQLDB() {
+        // Create AsycHttpClient object
+        AsyncHttpClient client = new AsyncHttpClient();
+        // Http Request Params Object
+        RequestParams params = new RequestParams();
+        // Show ProgressBar
+        prgDialog.show();
+        // Make Http call to getusers.php
+        client.post("http://" + IP + "/sync/script/getusers2.php", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(String response) {
+                // Hide ProgressBar
+                prgDialog.hide();
+                // Update SQLite DB with response sent by getusers.php
+                updateSQLite(response);
+            }
+
+            // When error occured
+            @Override
+            public void onFailure(int statusCode, Throwable error, String content) {
+                // TODO Auto-generated method stub
+                // Hide ProgressBar
+                prgDialog.hide();
+                if (statusCode == 404) {
+                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                } else if (statusCode == 500) {
+                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet]",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
 
     public void updateSQLite(String response){
         // Create GSON object

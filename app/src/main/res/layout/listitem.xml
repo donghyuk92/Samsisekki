@@ -6,36 +6,45 @@
     <TextView
         android:id="@+id/text1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:textSize="20dp"
-        android:layout_alignBottom="@+id/move"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/move"
-        android:layout_toRightOf="@+id/imageView2"
-        android:layout_toEndOf="@+id/imageView2" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignLeft="@+id/ratingBar"
+        android:layout_alignStart="@+id/ratingBar"
+        android:layout_alignParentTop="true" />
     <RatingBar android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:id="@+id/ratingBar"
         android:layout_below="@+id/text1"
-        android:layout_alignRight="@+id/move"
-        android:layout_alignEnd="@+id/move" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/move"
         android:text="가자!"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_below="@+id/ratingBar"
+        android:layout_toRightOf="@+id/imageView2"
+        android:layout_toEndOf="@+id/imageView2" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageView2"
-        android:layout_alignBottom="@+id/ratingBar"
         android:layout_toLeftOf="@+id/ratingBar"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        android:layout_alignBottom="@+id/move" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/review"
+        android:text="리뷰"
+        android:layout_below="@+id/ratingBar"
+        android:layout_toRightOf="@+id/move"
+        android:layout_toEndOf="@+id/move" />
 </RelativeLayout>

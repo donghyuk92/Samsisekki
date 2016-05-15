@@ -65,13 +65,13 @@ public class RecommendFragment extends Fragment {
     }
 
     public RecommendFragment() {
-        syncSQLiteMySQLDB();
-        // Required empty public constructor
+       // syncSQLiteMySQLDB();
+       // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        syncSQLiteMySQLDB();
+        //syncSQLiteMySQLDB();
         // Initialize Progress Dialog properties
         View v = inflater.inflate(R.layout.recommend, container, false);
 
@@ -211,73 +211,9 @@ public class RecommendFragment extends Fragment {
         });
         return v;
     }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         db = new DBController(activity);
-    }
-
-    public void syncSQLiteMySQLDB() {
-        // Create AsycHttpClient object
-        AsyncHttpClient client = new AsyncHttpClient();
-        // Http Request Params Object
-        RequestParams params = new RequestParams();
-        // Show ProgressBar
-        // Make Http call to getusers.php
-        client.post("http://117.17.188.146/donghyuk/sync/script/getusers.php", params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(String response) {
-                // Hide ProgressBar
-
-                // Update SQLite DB with response sent by getusers.php
-                updateSQLite(response);
-            }
-
-            // When error occured
-            @Override
-            public void onFailure(int statusCode, Throwable error, String content) {
-                // Hide ProgressBar
-                if (statusCode == 404) {
-                    Toast.makeText(getActivity(), "Requested resource not found", Toast.LENGTH_LONG).show();
-                } else if (statusCode == 500) {
-                    Toast.makeText(getActivity(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getActivity(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet]",
-                            Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-    }
-
-    public void updateSQLite(String response) {
-        // Create GSON object
-        Gson gson = new GsonBuilder().create();
-        try {
-            // Extract JSON array from the response
-            JSONArray arr = new JSONArray(response);
-            // If no of array elements is not zero
-            if (arr.length() != 0) {
-                // Loop through each array element, get JSON object which has userid and username
-                for (int i = 0; i < arr.length(); i++) {
-                    // Get JSON object
-                    JSONObject obj = (JSONObject) arr.get(i);
-                    // DB QueryValues Object to insert into SQLite
-                    queryValues = new HashMap<String, String>();
-                    // Add userID extracted from Object
-                    queryValues.put("deviceID", obj.get("deviceID").toString());
-                    // Add userName extracted from Object
-                    queryValues.put("inserttime", obj.get("inserttime").toString());
-                    queryValues.put("class", obj.get("class").toString());
-                    queryValues.put("menu", obj.get("menu").toString());
-                    queryValues.put("rating", obj.get("rating").toString());
-                    queryValues.put("url", obj.get("url").toString());
-                    // Insert User into SQLite DB
-                    db.insertUser(queryValues);
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 }

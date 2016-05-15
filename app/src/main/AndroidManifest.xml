@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.user.menu4u" >
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/icon"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.example.samsisekki.MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.example.samsisekki.parsing.parsing"></activity>
+        <activity android:name="com.example.samsisekki.nmap.nmap"></activity>
+        <activity android:name="com.example.samsisekki.displayingbitmaps.ui.ImageGridActivity"></activity>
+        <activity android:name="com.example.samsisekki.AlarmingActivity"
+            android:parentActivityName="com.example.samsisekki.MainActivity" >
+        </activity>
+        <activity android:name="com.example.samsisekki.displayingbitmaps.ui.ImageDetailActivity"></activity>
+        <activity android:name="com.example.samsisekki.FoodList"></activity>
+        <activity android:name="com.example.samsisekki.Alarm.AlarmSettingActivity"></activity>
+        <activity android:name="com.example.samsisekki.MakingReview"></activity>
+        <activity android:name="com.example.samsisekki.ShowReview"></activity>
+        <service
+            android:name="com.example.samsisekki.Alarm.AlarmService">
+        </service>
+        <receiver
+            android:name="com.example.samsisekki.Alarm.Receiver">
+        </receiver>
+        <service android:name="com.example.samsisekki.parsing.parsingtest">
+            <intent-filter>
+                <action android:name="parsingtest"></action>
+            </intent-filter>
+        </service>
+    </application>
+</manifest>

@@ -1,0 +1,1 @@
+include ':app', ':nmaps', ':gson-2.2.2', ':android-async-http-1.4.4'

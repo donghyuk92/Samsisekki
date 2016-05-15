@@ -1,14 +1,14 @@
 package com.example.samsisekki.dbtest;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.example.samsisekki.displayingbitmaps.provider.Images;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -17,7 +17,7 @@ import java.net.URL;
  * Created by User on 2015-11-16.
  */
 public class dbinsert extends AppCompatActivity {
-    private static final String IP = "117.17.188.146";
+    private static final String IP = Images.IP;
     phpInsert task_insert = new phpInsert();
     Context context;
 
@@ -26,8 +26,13 @@ public class dbinsert extends AppCompatActivity {
     }
 
     public void dbinsert(String deviceID, String clas, String menu, Float rating, String url) {
-        String query = "http://" + IP + "/donghyuk/insert.php?deviceID=" + deviceID + "&class=" + clas + "&menu=" + menu + "&rating=" + rating + "&url=" + url;
+        String query = "http://" + IP + "/insert.php?deviceID=" + deviceID + "&class=" + clas + "&menu=" + menu + "&rating=" + rating + "&url=" + url;
         Log.d("TAG", query);
+        task_insert.execute(query);
+    }
+
+    public void dbinsert(String deviceID, String name, String content){
+        String query = "http://" + IP + "/insertRe.php?deviceID=" + deviceID + "&name=" + name + "&content=" + content ;
         task_insert.execute(query);
     }
 
